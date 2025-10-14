@@ -75,6 +75,16 @@ public class Player extends Entity{
                 direction = "left";
             } else if (keyH.rightPressed) {
                 direction = "right";
+            } 
+
+            if (keyH.rightPressed && keyH.upPressed) {
+                direction = "upright";
+            } else if (keyH.leftPressed && keyH.upPressed) {
+                direction = "upleft";
+            } else if (keyH.rightPressed && keyH.downPressed) {
+                direction = "downright";
+            } else if (keyH.leftPressed && keyH.downPressed) {
+                direction = "downleft";
             }
 
             // CHECK TILE COLLISION
@@ -95,6 +105,22 @@ public class Player extends Entity{
                         break;
                     case "right":
                         worldX += speed;
+                        break;
+                    case "upright":
+                        worldX += 3;
+                        worldY -= 3;
+                        break;
+                    case "upleft":
+                        worldX -= 3;
+                        worldY -= 3;
+                        break;
+                    case "downright":
+                        worldX += 3;
+                        worldY += 3;
+                        break;
+                    case "downleft":
+                        worldX -= 3;
+                        worldY += 3;
                         break;
                 }
             }
@@ -148,6 +174,42 @@ public class Player extends Entity{
                 } 
                 if (spriteNumber == 2) {
                     image = left2;
+                }
+
+                break;
+            case "upright":
+                if (spriteNumber == 1) {
+                    image = up1;
+                } 
+                if (spriteNumber == 2) {
+                    image = up2;
+                }
+
+                break;
+            case "upleft":
+                if (spriteNumber == 1) {
+                    image = up1;
+                } 
+                if (spriteNumber == 2) {
+                    image = up2;
+                }
+
+                break;
+            case "downright":
+                if (spriteNumber == 1) {
+                    image = down1;
+                } 
+                if (spriteNumber == 2) {
+                    image = down2;
+                }
+
+                break;
+            case "downleft":
+                if (spriteNumber == 1) {
+                    image = down1;
+                } 
+                if (spriteNumber == 2) {
+                    image = down2;
                 }
 
                 break;
