@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -16,24 +17,70 @@ public class TileManager {
     GamePanel gp;
     public Tile[] tile;
     public int mapTileNumber[][];
+    ArrayList<String> fileNames = new ArrayList<>();
+    ArrayList<String> collisionStatus = new ArrayList<>();
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
 
-        tile = new Tile[10];
-        mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRow];
+        // READ TILE DATA FILE
+        InputStream is = getClass().getResourceAsStream("/res/maps/tiledata.txt");
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+        // GETTING TILE NAMES AND COLLISION INFO FROM THE FILE
+        String line;
+
+        try {
+            while ((line = br.readLine()) != null) {
+                fileNames.add(line);
+                collisionStatus.add(br.readLine());
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        tile = new Tile[fileNames.size()];
         getTileImage();
-        loadMap("/res/maps/world01.txt");
+
+        // Gett maxWorldCol & Row
+        is = getClass().getResourceAsStream("/res/maps/hell01.txt");
+        br = new BufferedReader(new InputStreamReader(is));
+
+        try {
+            String line2 = br.readLine();
+            String maxTile[] = line2.split(" ");
+
+            gp.maxWorldCol = maxTile.length;
+            gp.maxWorldRow = maxTile.length;
+            mapTileNumber = new int[gp.maxWorldCol][gp.maxWorldRow];
+
+            br.close();
+        } catch (IOException e) {
+            System.out.println("Exception!");
+        }
+
+        loadMap("/res/maps/hell01.txt");
     }
 
     public void getTileImage() {
 
-        setup(0, "grass", false);
-        setup(1, "wall", true);
-        setup(2, "water", true);
-        setup(3, "earth", false);
-        setup(4, "tree", true);
-        setup(5, "sand", false);  
+        for (int i = 0; i < fileNames.size(); i++) {
+            String fileName;
+            boolean collision;
+
+            // get file name first
+            fileName = fileNames.get(i);
+
+            // get collision status
+            if (collisionStatus.get(i).equals("true")) {
+                collision = true;
+            } else {
+                collision = false;
+            }
+
+            setup(i, fileName, collision);
+        }
     }
 
     public void setup(int index, String imageName, boolean collision) {
@@ -41,7 +88,7 @@ public class TileManager {
 
         try {
             tile[index] = new Tile();
-            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName + ".png"));
+            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName));
             tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
             tile[index].collision = collision;
 
@@ -87,18 +134,18 @@ public class TileManager {
 
             int tileNum = mapTileNumber[worldCol][worldRow];
 
-            int worldX = worldCol * gp.tileSize; //position of tile ON THE MAP
+            int worldX = worldCol * gp.tileSize; // position of tile ON THE MAP
             int worldY = worldRow * gp.tileSize;
 
-            //position of tile ON SCREEN
-            int screenX = worldX - gp.player.worldX + gp.player.screenX; 
+            // position of tile ON SCREEN
+            int screenX = worldX - gp.player.worldX + gp.player.screenX;
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-            //Improving efficiency by not rendering tiles that are not visible:
-            if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX 
-                && worldX - gp.tileSize < gp.player.worldX + gp.player.screenX
-                && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
-                && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+            // Improving efficiency by not rendering tiles that are not visible:
+            if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX
+                    && worldX - gp.tileSize < gp.player.worldX + gp.player.screenX
+                    && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY
+                    && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
 
                 g2.drawImage(tile[tileNum].image, screenX, screenY, null);
 

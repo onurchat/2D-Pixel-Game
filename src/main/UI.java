@@ -11,6 +11,7 @@ import object.OBJ_Key;
 public class UI {
 
     GamePanel gp;
+    Graphics2D g2;
     Font font;
     BufferedImage keyImage;
     public boolean messageOn = false;
@@ -35,13 +36,19 @@ public class UI {
     public void draw(Graphics2D g2) {
         //DONT CREATE INSTANCE IN DRAW METHODS!!!
         //BECAUSE IT GETS CALLED 60 TIMES PER SECOND
+        this.g2 = g2;
         g2.setFont(font);
         g2.setColor(Color.white);
-        g2.drawImage(keyImage, gp.tileSize / 2, gp.tileSize / 2, gp.tileSize, gp.tileSize, null);
-        g2.drawString(" " + gp.player.hasKey, 74, 65);
+        if (gp.player.hasKey > 0) {
+            g2.drawImage(keyImage, gp.tileSize / 2, gp.tileSize / 2, gp.tileSize, gp.tileSize, null);
+            g2.drawString(" " + gp.player.hasKey, 74, 65);
+        }
 
         //TIME
-        playTime += (double) 1 / 60;
+        if (gp.gameState == gp.playState) {
+            playTime += (double) 1 / 60;
+        }
+
         g2.drawString("Time:" + dFormat.format(playTime), gp.tileSize * 11, 65);
 
         //message
@@ -56,6 +63,31 @@ public class UI {
                 messageOn = false;
             }
         }
+
+        if (gp.gameState == gp.playState) {
+
+        }
+
+        if (gp.gameState == gp.pauseState) {
+            drawPauseScreen();
+        }
+
+
+    }
+
+    public void drawPauseScreen() {
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
+        String text = "PAUSED";
+        int x = getXForCenteredText(text);
+        int y = gp.screenHeight / 2;
+
+        g2.drawString(text, x, y);
+    }
+
+    public int getXForCenteredText(String text) {
+        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        int x = gp.screenWidth / 2 - length / 2;
+        return x;
     }
 
 }
