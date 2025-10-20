@@ -19,7 +19,7 @@ public class Player extends Entity{
     public final int screenX;
     public final int screenY;
 
-    int hasKey = 0;
+    public int hasKey = 0;
 
     public Player (GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
@@ -147,7 +147,7 @@ public class Player extends Entity{
     }
 
     public void pickUpObject(int i) {
-        if(i != 999) {
+        if (i != 999) {
             String objName = gp.obj[i].name;
 
             switch(objName) {
@@ -155,14 +155,16 @@ public class Player extends Entity{
                     gp.playSoundEffect(1);
                     hasKey++;
                     gp.obj[i] = null;
-                    System.out.println("Number of keys: " + hasKey);
+                    gp.ui.showMessage("+1 key!");
                     break;
                 case "Door":
                     if (hasKey > 0) {
                         gp.playSoundEffect(2);
                         gp.obj[i] = null;
                         hasKey--;
-                        System.out.println("Number of keys: " + hasKey);
+                        gp.ui.showMessage("opened a door!");
+                    } else {
+                        gp.ui.showMessage("you need a key...");
                     }
                     break;
             }
