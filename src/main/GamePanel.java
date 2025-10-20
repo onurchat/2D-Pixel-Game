@@ -111,6 +111,12 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D) g; //casting g to g2 (Graphics is superclass, Graphics2D is subclass)
 
+        //DEBUG
+        long drawStart = 0;
+        if (keyH.checkDrawTime) {
+            drawStart = System.nanoTime();
+        }
+
         tileManager.draw(g2); //ORDER MATTERS!! tiles in background, player front!
 
         for (int i = 0; i < obj.length; i++) {
@@ -122,6 +128,15 @@ public class GamePanel extends JPanel implements Runnable{
         player.draw(g2); //drawing player
 
         ui.draw(g2); //UI ON TOP 
+
+        //DEBUG
+        if (keyH.checkDrawTime) {
+            long drawEnd = System.nanoTime();
+            long passed = drawEnd - drawStart;
+            g2.setColor(Color.white);
+            g2.drawString("Draw Time: " + passed, 10, 400);
+            System.out.println(passed);
+        } 
 
         g2.dispose();
     }

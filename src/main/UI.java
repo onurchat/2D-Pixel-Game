@@ -23,7 +23,7 @@ public class UI {
     public UI(GamePanel gp) {
         this.gp = gp;
         font = new Font("Arial", Font.PLAIN, 40);
-        OBJ_Key key = new OBJ_Key();
+        OBJ_Key key = new OBJ_Key(gp);
         keyImage = key.image;
     }
 
