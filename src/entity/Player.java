@@ -152,12 +152,14 @@ public class Player extends Entity{
 
             switch(objName) {
                 case "Key":
+                    gp.playSoundEffect(1);
                     hasKey++;
                     gp.obj[i] = null;
                     System.out.println("Number of keys: " + hasKey);
                     break;
                 case "Door":
                     if (hasKey > 0) {
+                        gp.playSoundEffect(2);
                         gp.obj[i] = null;
                         hasKey--;
                         System.out.println("Number of keys: " + hasKey);
