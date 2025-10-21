@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener{
 
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
 
     //DEBUG
     boolean checkDrawTime = false;
@@ -22,6 +22,34 @@ public class KeyHandler implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
+
+        //TITLE STATE
+        if (gp.gameState == gp.titleState) {
+            if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
+                if (gp.ui.commandNum - 1 < 0) {
+                    gp.ui.commandNum = 1;
+                } else {
+                    gp.ui.commandNum--;
+                }
+
+            }
+            if (code == KeyEvent.VK_S || code == KeyEvent.VK_DOWN) {
+                if (gp.ui.commandNum + 1 > 1) {
+                    gp.ui.commandNum = 0;
+                } else {
+                    gp.ui.commandNum++;
+                }
+            }
+            if (code == KeyEvent.VK_ENTER) {
+                if (gp.ui.commandNum == 0) {
+                    gp.gameState = gp.playState;
+                    gp.playMusic(0);
+                }
+                if (gp.ui.commandNum == 1) {
+                    System.exit(0);
+                }
+            }
+        }
 
         //PLAY STATE
         if (gp.gameState == gp.playState) {
@@ -44,6 +72,10 @@ public class KeyHandler implements KeyListener{
             if (code == KeyEvent.VK_SPACE) {
                 gp.gameState = gp.pauseState;
                 gp.music.stop();
+            }
+            if (code == KeyEvent.VK_ENTER) {
+                enterPressed = true;
+                System.out.println("enter");
             }
 
             //DEBUG
