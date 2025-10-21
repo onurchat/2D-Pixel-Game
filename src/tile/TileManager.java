@@ -24,7 +24,7 @@ public class TileManager {
         this.gp = gp;
 
         // READ TILE DATA FILE
-        InputStream is = getClass().getResourceAsStream("/res/maps/tiledata.txt");
+        InputStream is = getClass().getResourceAsStream("/res/maps/tiledata2.txt");
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
         // GETTING TILE NAMES AND COLLISION INFO FROM THE FILE
@@ -44,7 +44,7 @@ public class TileManager {
         getTileImage();
 
         // Gett maxWorldCol & Row
-        is = getClass().getResourceAsStream("/res/maps/hell01.txt");
+        is = getClass().getResourceAsStream("/res/maps/hell02.txt");
         br = new BufferedReader(new InputStreamReader(is));
 
         try {
@@ -60,7 +60,7 @@ public class TileManager {
             System.out.println("Exception!");
         }
 
-        loadMap("/res/maps/hell01.txt");
+        loadMap("/res/maps/hell02.txt");
     }
 
     public void getTileImage() {

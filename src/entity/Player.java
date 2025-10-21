@@ -44,10 +44,14 @@ public class Player extends Entity{
     }
 
     public void setDefaultValues () {
-        worldX = gp.tileSize * 45; //23rd tile
-        worldY = gp.tileSize * 45; //21st tile
+        worldX = gp.tileSize * 45; 
+        worldY = gp.tileSize * 45; 
         speed = 4;
         direction = "down";
+
+        //PLAYER STATUS
+        maxLife = 6;
+        life = maxLife;
     }
 
     public void getPlayerImage() {
@@ -98,6 +102,10 @@ public class Player extends Entity{
             //CHECK NPC COLLISION
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex); 
+
+            //CHECK EVENT
+            gp.eHandler.checkEvent();
+            gp.keyH.enterPressed = false;
 
             //IF COLLISION IS FALSE, PLAYER CAN MOVE
             if (!collisionOn) {
