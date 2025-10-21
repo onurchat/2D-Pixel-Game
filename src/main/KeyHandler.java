@@ -23,40 +23,55 @@ public class KeyHandler implements KeyListener{
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_W) {
-            upPressed = true;
-        }
+        //PLAY STATE
+        if (gp.gameState == gp.playState) {
+            if (code == KeyEvent.VK_W) {
+                upPressed = true;
+            }
 
-        if (code == KeyEvent.VK_S) {
-            downPressed = true;
-        }
+            if (code == KeyEvent.VK_S) {
+                downPressed = true;
+            }
 
-        if (code == KeyEvent.VK_A) {
-            leftPressed = true;
-        }
+            if (code == KeyEvent.VK_A) {
+                leftPressed = true;
+            }
 
-        if (code == KeyEvent.VK_D) {
-            rightPressed = true;
-        }
-        if (code == KeyEvent.VK_SPACE) {
-            if (gp.gameState == gp.playState) {
+            if (code == KeyEvent.VK_D) {
+                rightPressed = true;
+            }
+
+            if (code == KeyEvent.VK_SPACE) {
                 gp.gameState = gp.pauseState;
                 gp.music.stop();
-            } else if (gp.gameState == gp.pauseState) {
-                gp.gameState = gp.playState;
-                gp.music.play();
+            }
+
+            //DEBUG
+            if (code == KeyEvent.VK_T) {
+                if (!checkDrawTime) {
+                    checkDrawTime = true;
+                } else if (checkDrawTime) {
+                    checkDrawTime = false;
+                }
             }
         }
 
-        //DEBUG
-        if (code == KeyEvent.VK_T) {
-            if (!checkDrawTime) {
-                checkDrawTime = true;
-            } else if (checkDrawTime) {
-                checkDrawTime = false;
-            }
+        //PAUSE STATE
+        else if (gp.gameState == gp.pauseState) {
+            if (code == KeyEvent.VK_SPACE) {
+                gp.gameState = gp.playState;
+                gp.music.play();
+            } 
+        }
+
+        //DIALOGUE STATE
+        else if (gp.gameState == gp.dialougeState) {
+            if (code == KeyEvent.VK_ENTER) {
+                gp.gameState = gp.playState;
+            } 
         }
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {

@@ -14,7 +14,6 @@ import main.UtilityTool;
 
 public class Player extends Entity{
 
-    GamePanel gp;
     KeyHandler keyH;
 
     public final int screenX;
@@ -23,7 +22,9 @@ public class Player extends Entity{
     public int hasKey = 0;
 
     public Player (GamePanel gp, KeyHandler keyH) {
-        this.gp = gp;
+
+        super(gp); //calling the constructor of superclass
+
         this.keyH = keyH;
         
         //screen X and Y are middle of screen always for player.
@@ -51,28 +52,14 @@ public class Player extends Entity{
 
     public void getPlayerImage() {
 
-        up1 = setup("up1");
-        up2 = setup("up2");
-        down1 = setup("down1");
-        down2 = setup("down2");
-        left1 = setup("left1");
-        left2 = setup("left2");
-        right1 = setup("right1");
-        right2 = setup("right2");
-    }
-
-    public BufferedImage setup(String imageName) {
-        UtilityTool uTool = new UtilityTool();
-        BufferedImage image = null;
-
-        try{
-            image = ImageIO.read(getClass().getResourceAsStream("/res/player/" + imageName + ".png"));
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-
-        return image;
+        up1 = setup("/res/player/up1");
+        up2 = setup("/res/player/up2");
+        down1 = setup("/res/player/down1");
+        down2 = setup("/res/player/down2");
+        left1 = setup("/res/player/left1");
+        left2 = setup("/res/player/left2");
+        right1 = setup("/res/player/right1");
+        right2 = setup("/res/player/right2");
     }
 
     public void update () {
@@ -107,6 +94,10 @@ public class Player extends Entity{
             //CHECK OBJECT COLLISION
             int objIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(objIndex);
+
+            //CHECK NPC COLLISION
+            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+            interactNPC(npcIndex); 
 
             //IF COLLISION IS FALSE, PLAYER CAN MOVE
             if (!collisionOn) {
@@ -171,13 +162,20 @@ public class Player extends Entity{
                         gp.playSoundEffect(2);
                         gp.obj[i] = null;
                         hasKey--;
-                        gp.ui.showMessage("opened a door!");
+                        gp.ui.showMessage("Opened a door!");
                     } else {
-                        gp.ui.showMessage("you need a key...");
+                        gp.ui.showMessage("You need a key.");
                     }
                     break;
             }
         }
+    }
+
+    public void interactNPC(int i) {
+        if (i != 999) { 
+            gp.gameState = gp.dialougeState;
+            gp.npc[i].speak();
+       }
     }
 
     public void draw (Graphics2D g2) {
