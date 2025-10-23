@@ -7,7 +7,7 @@ public class EventHandler {
     Rectangle eventRect;
     int eventRectDefaultX;
     int eventRectDefaultY;
-    int dPitCounter = 0;
+    int dPitCounter = 120;
     int healCounter = 0;
     int healTriggerCounter = 0;
 
@@ -28,24 +28,27 @@ public class EventHandler {
             dPitCounter++;
         }
         if (healCounter <= 600) {
-            dPitCounter++;
+            healCounter++;
         }
         if (healTriggerCounter <= 60) {
-            dPitCounter++;
+            healTriggerCounter++;
         }
 
         //EVENTS
         if (dPitCounter >= 120 && hit(32, 34, "any")) {
             damagePit(gp.playState);
             dPitCounter = 0;
+            gp.player.invincible = true;
         }
         if (dPitCounter >= 120 && hit(45, 43, "any")) {
             damagePit(gp.playState);
             dPitCounter = 0;
+            gp.player.invincible = true;
         }
         if (dPitCounter >= 120 && hit(77, 45, "any")) {
             damagePit(gp.playState);
             dPitCounter = 0;
+            gp.player.invincible = true;
         }
         if (hit(32, 26, "any") || hit(31, 27, "any")) {
             if (healTriggerCounter >= 60) {
@@ -88,8 +91,9 @@ public class EventHandler {
     public void damagePit(int gameState) {
         gp.gameState = gameState;
         //gp.ui.currentDialogue = "You fell into a pit!";
-        gp.ui.showMessage("You fell into a pit!");
+        gp.ui.showMessage("You ran into spikes!");
         gp.player.life--;
+        gp.playSoundEffect(4);
     }
     public void healing(int gameState) {
         gp.gameState = gameState;

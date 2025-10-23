@@ -44,6 +44,7 @@ public class GamePanel extends JPanel implements Runnable{
     public Player player = new Player(this, keyH);
     public SuperObject obj[] = new SuperObject[10];
     public Entity npc[] = new Entity[10];
+    public Entity monster[] = new Entity[50];
 
     //GAME STATE
     public int gameState = 3;
@@ -64,6 +65,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void setupGame() {
         aSetter.setObject();
         aSetter.setNPC();
+        aSetter.setMonster();
 
         //playMusic(0);
     }
@@ -122,6 +124,16 @@ public class GamePanel extends JPanel implements Runnable{
                     npc[i].update();
                 }
             }
+            for (int i = 0; i < monster.length; i++) { // Monsters
+                if (monster[i] != null) {
+                    if (monster[i].alive && !monster[i].dying) {
+                        monster[i].update(); 
+                    }
+                    if (!monster[i].alive) {
+                        monster[i] = null;
+                    }
+                }
+            }
 
         } 
         if (gameState == pauseState) {
@@ -161,6 +173,13 @@ public class GamePanel extends JPanel implements Runnable{
                 }
             }
 
+            //DRAW MONSTERS
+            for (int i = 0; i < monster.length; i++) {
+                if (monster[i] != null) {
+                    monster[i].draw(g2);
+                }
+            }
+
             player.draw(g2); // drawing player
 
             ui.draw(g2); // UI ON TOP
@@ -172,7 +191,8 @@ public class GamePanel extends JPanel implements Runnable{
             long passed = drawEnd - drawStart;
             g2.setColor(Color.white);
             g2.drawString("Draw Time: " + passed, 10, 400);
-            System.out.println(passed);
+            g2.drawString("FPS: " + fps, 10, 450);
+            g2.drawString("Sprite Number: " + this.player.spriteCounter, 10, 500);
         } 
 
         g2.dispose();
