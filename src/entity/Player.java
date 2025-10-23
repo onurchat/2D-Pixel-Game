@@ -300,7 +300,7 @@ public class Player extends Entity{
     }
 
     public void contactMonster(int i) {
-        if (i != 999 && !invincible) {
+        if (i != 999 && !invincible && !gp.monster[i].dying && gp.monster[i].alive) {
             gp.playSoundEffect(4);
             life--;
             invincible = true;

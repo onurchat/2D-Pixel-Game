@@ -91,8 +91,9 @@ public class EventHandler {
     public void damagePit(int gameState) {
         gp.gameState = gameState;
         //gp.ui.currentDialogue = "You fell into a pit!";
-        gp.ui.showMessage("You fell into a pit!");
+        gp.ui.showMessage("You ran into spikes!");
         gp.player.life--;
+        gp.playSoundEffect(4);
     }
     public void healing(int gameState) {
         gp.gameState = gameState;

@@ -100,7 +100,7 @@ public class Entity {
         gp.cChecker.checkEntity(this, gp.monster);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
-        if (this.type == 2 && contactPlayer && !gp.player.invincible) {
+        if (this.type == 2 && contactPlayer && !gp.player.invincible && !this.dying) {
             gp.player.life--;
             gp.playSoundEffect(4);
             gp.player.invincible = true;
@@ -251,7 +251,7 @@ public class Entity {
         if (dyingCounter > animationInterval * 7 && dyingCounter <= animationInterval * 8) {
             changeAlpha(g2, 1f);
         }
-        if (dyingCounter > 40) {
+        if (dyingCounter >= 40) {
             dying = false;
             alive = false;
             dyingCounter = 0;
