@@ -1,9 +1,11 @@
 package entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -103,6 +105,10 @@ public class Player extends Entity{
             int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex); 
 
+            //CHECK MONSTER COLLISION
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            contactMonster(monsterIndex);
+
             //CHECK EVENT
             gp.eHandler.checkEvent();
             gp.keyH.enterPressed = false;
@@ -152,6 +158,13 @@ public class Player extends Entity{
             }
 
         }
+        if (invincible) {
+            invincibleCounter++;
+            if (invincibleCounter > 60) {
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
     }
 
     public void pickUpObject(int i) {
@@ -184,6 +197,13 @@ public class Player extends Entity{
             gp.gameState = gp.dialougeState;
             gp.npc[i].speak();
        }
+    }
+
+    public void contactMonster(int i) {
+        if (i != 999 && !invincible) {
+            life--;
+            invincible = true;
+        }
     }
 
     public void draw (Graphics2D g2) {
@@ -264,8 +284,17 @@ public class Player extends Entity{
 
         }
 
-        g2.drawImage(image, screenX, screenY, null);
-
+        if (invincible) {
+            //change the opacity if player is invincible!
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+            float[] scales = { 1.5f, 0f, 0f, 1.0f }; // {R, G, B, A}
+            float[] offsets = new float[4];
+            RescaleOp redTint = new RescaleOp(scales, offsets, null);
+            g2.drawImage(image, redTint, screenX, screenY);
+            // reset alpha after drawing player so other UI stays same!
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        } else {
+            g2.drawImage(image, screenX, screenY, null);
+        }
     }
-
 }

@@ -1,6 +1,7 @@
 package main;
 
 import entity.NPC_Reaper;
+import monster.MON_Eye;
 import object.OBJ_Chest;
 import object.OBJ_Door;
 import object.OBJ_Key;
@@ -44,6 +45,28 @@ public class AssetSetter {
         gp.npc[0] = new NPC_Reaper(gp);
         gp.npc[0].worldX = gp.tileSize * 47;
         gp.npc[0].worldY = gp.tileSize * 47;
+    }
+
+    public void setMonster() {
+        gp.monster[0] = new MON_Eye(gp);
+        gp.monster[0].worldX = gp.tileSize * 50;
+        gp.monster[0].worldY = gp.tileSize * 45;
+
+        gp.monster[1] = new MON_Eye(gp);
+        gp.monster[1].worldX = gp.tileSize * 45;
+        gp.monster[1].worldY = gp.tileSize * 50;
+
+        gp.monster[2] = new MON_Eye(gp);
+        gp.monster[2].worldX = gp.tileSize * 40;
+        gp.monster[2].worldY = gp.tileSize * 40;
+
+        gp.monster[3] = new MON_Eye(gp);
+        gp.monster[3].worldX = gp.tileSize * 40;
+        gp.monster[3].worldY = gp.tileSize * 45;
+
+        gp.monster[4] = new MON_Eye(gp);
+        gp.monster[4].worldX = gp.tileSize * 45;
+        gp.monster[4].worldY = gp.tileSize * 40;
     }
 
 }

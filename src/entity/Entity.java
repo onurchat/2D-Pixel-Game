@@ -14,6 +14,7 @@ public class Entity {
 
     GamePanel gp;
 
+    public String name;
     public int worldX, worldY;
     public int speed;
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
@@ -25,8 +26,11 @@ public class Entity {
     public int solidaAreaDefaultY;
     public boolean collisionOn = false;
     public int actionCounter = 0;
+    public boolean invincible = false;
+    public int invincibleCounter = 0;
     String dialogues[] = new String[20];
     int dialogueIndex = 0;
+    public int type; //0 = player, 1= NPC, 2= monster
 
     //CHARACTER STATUS
     public int maxLife;
@@ -75,14 +79,21 @@ public class Entity {
         }
     }
 
-    public void update() { //identical for all NPCs
+    public void update() { //identical for all entities
 
         setAction();
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this, false);
-        gp.cChecker.checkPlayer(this);
+        gp.cChecker.checkEntity(this, gp.npc);
+        gp.cChecker.checkEntity(this, gp.monster);
+        boolean contactPlayer = gp.cChecker.checkPlayer(this);
+
+        if (this.type == 2 && contactPlayer && !gp.player.invincible) {
+            gp.player.life--;
+            gp.player.invincible = true;
+        }
 
         if (!collisionOn) {
             switch (direction) {
