@@ -126,7 +126,12 @@ public class GamePanel extends JPanel implements Runnable{
             }
             for (int i = 0; i < monster.length; i++) { // Monsters
                 if (monster[i] != null) {
-                    monster[i].update();
+                    if (monster[i].alive && !monster[i].dying) {
+                        monster[i].update(); 
+                    }
+                    if (!monster[i].alive) {
+                        monster[i] = null;
+                    }
                 }
             }
 
@@ -186,7 +191,8 @@ public class GamePanel extends JPanel implements Runnable{
             long passed = drawEnd - drawStart;
             g2.setColor(Color.white);
             g2.drawString("Draw Time: " + passed, 10, 400);
-            System.out.println(passed);
+            g2.drawString("FPS: " + fps, 10, 450);
+            g2.drawString("Sprite Number: " + this.player.spriteCounter, 10, 500);
         } 
 
         g2.dispose();

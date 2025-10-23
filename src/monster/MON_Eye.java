@@ -7,8 +7,12 @@ import main.GamePanel;
 
 public class MON_Eye extends Entity{
 
+    GamePanel gp;
+
     public MON_Eye(GamePanel gp) {
         super(gp);
+
+        this.gp = gp;
     
         type = 2;
         name = "Slime";
@@ -29,14 +33,14 @@ public class MON_Eye extends Entity{
         getImage();
     }
     public void getImage() {
-        up1 = setup("/res/monster/eye1");
-        up2 = setup("/res/monster/eye2");
-        down1 = setup("/res/monster/eye1");
-        down2 = setup("/res/monster/eye2");
-        left1 = setup("/res/monster/eye1");
-        left2 = setup("/res/monster/eye2");
-        right1 = setup("/res/monster/eye1");
-        right2 = setup("/res/monster/eye2");
+        up1 = setup("/res/monster/eye1", gp.tileSize, gp.tileSize);
+        up2 = setup("/res/monster/eye2", gp.tileSize, gp.tileSize);
+        down1 = setup("/res/monster/eye1", gp.tileSize, gp.tileSize);
+        down2 = setup("/res/monster/eye2", gp.tileSize, gp.tileSize);
+        left1 = setup("/res/monster/eye1", gp.tileSize, gp.tileSize);
+        left2 = setup("/res/monster/eye2", gp.tileSize, gp.tileSize);
+        right1 = setup("/res/monster/eye1", gp.tileSize, gp.tileSize);
+        right2 = setup("/res/monster/eye2", gp.tileSize, gp.tileSize);
     }
     public void setAction() {
         actionCounter++;
