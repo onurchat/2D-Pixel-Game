@@ -41,6 +41,7 @@ public class Entity {
     public boolean dying = false;
     int dyingCounter = 0;
     boolean hpBarOn = false;
+    public int shotAvailableCounter = 0;
     
     public Projectile projectile;
     public int useCost;
@@ -95,6 +96,10 @@ public class Entity {
     }
 
     public void update() { //identical for all entities
+
+        if (type == 2 && shotAvailableCounter < 30) {
+            shotAvailableCounter++;
+        }
 
         setAction();
 
@@ -236,7 +241,7 @@ public class Entity {
         dyingCounter++;
         int animationInterval = 5;
 
-        gp.aSetter.spawnMonster(47, 47);
+        //gp.aSetter.spawnMonster(47, 47);
 
         if (dyingCounter <= animationInterval) {
             changeAlpha(g2, 0f);
@@ -271,7 +276,7 @@ public class Entity {
             gp.monster.remove(mIndex);
 
             //SPAWNING
-            gp.aSetter.spawnMonster(47, 50);
+            //gp.aSetter.spawnMonster(47, 50);
         }
     }
 

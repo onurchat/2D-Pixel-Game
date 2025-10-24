@@ -79,17 +79,18 @@ public class AssetSetter {
     }
 
     public void spawnMonster(int col, int row) {
+        
         for (int i = 0; i < gp.monster.size(); i++) {
-            if (gp.monster.get(i) != null && (gp.monster.get(i).worldX == col * gp.tileSize
-                    || gp.monster.get(i).worldY == row * gp.tileSize)) {
+            if ((Math.abs(col * gp.tileSize - gp.monster.get(i).worldX) < 30)
+                    || (Math.abs(row * gp.tileSize - gp.monster.get(i).worldY) < 30)) {
                 return;
             }
         }
 
-        for (int i = 0; i < gp.monster.size(); i++) {
-            if (gp.monster.get(i) != null) {
-                monsterCount++;
-            }
+
+        if ((col * gp.tileSize - gp.player.worldX < 30) 
+            || (row * gp.tileSize - gp.player.worldY < 30)) {
+            return;
         }
 
         try {

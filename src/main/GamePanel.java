@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable{
     //SCREEN SETTINGS
@@ -121,6 +122,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update() {
+        
         if (gameState == playState) {
 
             player.update(); //PLAYER
@@ -140,7 +142,7 @@ public class GamePanel extends JPanel implements Runnable{
                     }
                 }
             }
-            for (int i = 0; i < projectileList.size(); i++) { // Monsters
+            for (int i = 0; i < projectileList.size(); i++) { // projectiles
                 if (projectileList.get(i) != null) {
                     if (projectileList.get(i).alive) {
                         projectileList.get(i).update();
@@ -236,5 +238,5 @@ public class GamePanel extends JPanel implements Runnable{
         soundEffect.setFile(i);
         soundEffect.play();
     }
-
 }
+

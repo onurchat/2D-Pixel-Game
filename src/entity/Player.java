@@ -213,7 +213,7 @@ public class Player extends Entity{
 
         if (projectileTimer >= 40) {
             if (gp.mouseH.mousePressed) {
-                projectile.set(worldX, worldY, gp.mouseH.mouseX, gp.mouseH.mouseY, true, this);
+                projectile.setPlayerProjectile(worldX, worldY, gp.mouseH.mouseX, gp.mouseH.mouseY, true, this);
 
                 gp.projectileList.add(projectile);
                 gp.playSoundEffect(6);
