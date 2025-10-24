@@ -24,6 +24,7 @@ public class Player extends Entity{
     public final int screenY;
 
     public int hasKey = 0;
+    public int eyesKilled = 0;
 
     int soundEffectTimer = 30;
     int projectileTimer = 40;
@@ -341,6 +342,7 @@ public class Player extends Entity{
                 if (gp.monster.get(i).life <= 0) {
                     gp.monster.get(i).dying = true;
                     gp.monster.get(i).setMonsterIndex(i);
+                    eyesKilled++;
                 }
             }
         }

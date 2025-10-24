@@ -44,9 +44,7 @@ public class AssetSetter {
 
     public void setNPC() {
 
-        if (gp.npc.size() > 0) {
-            gp.npc.remove(0);
-        }
+        gp.npc.clear();
         NPC_Reaper npc1 = new NPC_Reaper(gp);
         npc1.worldX = gp.tileSize * 30;
         npc1.worldY = gp.tileSize * 25;
@@ -56,11 +54,7 @@ public class AssetSetter {
 
     public void setMonster() {
 
-        if (gp.monster.size() > 0) {
-            for (int i = 0; i < gp.monster.size(); i++) {
-                gp.monster.remove(i);
-            }
-        }
+        gp.monster.clear();
 
         MON_Eye eye1 = new MON_Eye(gp);
         eye1.worldX = gp.tileSize * 50;
@@ -94,13 +88,15 @@ public class AssetSetter {
         for (int i = 0; i < gp.monster.size(); i++) {
             if ((Math.abs(col * gp.tileSize - gp.monster.get(i).worldX) < 30)
                     || (Math.abs(row * gp.tileSize - gp.monster.get(i).worldY) < 30)) {
+                System.out.println("occupied by monster!");
                 return;
             }
         }
 
 
-        if ((col * gp.tileSize - gp.player.worldX < 30) 
-            || (row * gp.tileSize - gp.player.worldY < 30)) {
+        if (Math.abs(col * gp.tileSize - gp.player.worldX) < 30 
+            || Math.abs(row * gp.tileSize - gp.player.worldY) < 30) {
+            System.out.println("occupied by PLAYER!");
             return;
         }
 
