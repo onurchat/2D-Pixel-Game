@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.JPanel;
 
+import ai.PathFinder;
 import entity.Entity;
 import entity.Player;
 import object.SuperObject;
@@ -42,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
     int fps = 60;
 
     // SYSTEM
-    TileManager tileManager = new TileManager(this);
+    public TileManager tileManager = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
     public MouseHandler mouseH = new MouseHandler(this);
     Sound music = new Sound();
@@ -52,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
     public UI ui = new UI(this);
     public EventHandler eHandler = new EventHandler(this);
     Thread gameThread;
+    public PathFinder pFinder = new PathFinder(this);
 
     // ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
@@ -97,6 +99,10 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
+        ui.commandNum = 0;
+        ui.playTime = 0;
+        player.eyesKilled = 0;
+        projectileList.clear();
     }
 
     public void setFullScreen() {

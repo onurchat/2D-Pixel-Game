@@ -33,6 +33,10 @@ public class UI {
     public int commandNum = 0;
     int subState = 0;
 
+    int minutes = 0;
+    int seconds = 0;
+    String timeString;
+
     double playTime;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
 
@@ -79,10 +83,14 @@ public class UI {
         //TIME
         if (gp.gameState == gp.playState) {
             playTime += (double) 1 / 60;
+            minutes = (int) playTime / 60;
+            seconds = (int) playTime % 60;
+            timeString = String.format("%d:%02d", minutes, seconds);
         }
 
         if (gp.gameState != gp.titleState) {
-            g2.drawString("Time:" + dFormat.format(playTime), gp.screenWidth2 - 600, 65);
+            g2.drawString("Time:" + timeString, gp.screenWidth2 - 600, 65);
+            g2.drawString("Eyes Killed:" + gp.player.eyesKilled, gp.screenWidth2 - 670, 120);
             drawPlayerLife();
         }
 
@@ -355,7 +363,7 @@ public class UI {
     }
 
     public void drawGameOverScreen() {
-        g2.setColor(new Color(0, 0, 0, 150));
+        g2.setColor(new Color(10, 0, 0, 180));
         g2.fillRect(0, 0, gp.screenWidth2, gp.screenHeight2);
 
         int x;

@@ -99,8 +99,10 @@ public class KeyHandler implements KeyListener{
             if (code == KeyEvent.VK_T) {
                 if (!checkDrawTime) {
                     checkDrawTime = true;
+                    gp.tileManager.drawPath = true;
                 } else if (checkDrawTime) {
                     checkDrawTime = false;
+                    gp.tileManager.drawPath = false;
                 }
             }
         }
