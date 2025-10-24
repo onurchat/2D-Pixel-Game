@@ -17,7 +17,7 @@ public class MON_Eye extends Entity{
         type = 2;
         name = "Slime";
         speed = 1;
-        maxLife = 4;
+        maxLife = 6;
         life = maxLife;
         direction = "up";
 

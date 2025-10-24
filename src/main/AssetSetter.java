@@ -9,6 +9,7 @@ import object.OBJ_Key;
 public class AssetSetter {
 
     GamePanel gp;
+    int monsterCount;
 
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
@@ -42,31 +43,65 @@ public class AssetSetter {
     }
 
     public void setNPC() {
-        gp.npc[0] = new NPC_Reaper(gp);
-        gp.npc[0].worldX = gp.tileSize * 47;
-        gp.npc[0].worldY = gp.tileSize * 47;
+        NPC_Reaper npc1 = new NPC_Reaper(gp);
+        npc1.worldX = gp.tileSize * 30;
+        npc1.worldY = gp.tileSize * 25;
+
+        gp.npc.add(npc1);
     }
 
     public void setMonster() {
-        gp.monster[0] = new MON_Eye(gp);
-        gp.monster[0].worldX = gp.tileSize * 50;
-        gp.monster[0].worldY = gp.tileSize * 45;
+        MON_Eye eye1 = new MON_Eye(gp);
+        eye1.worldX = gp.tileSize * 50;
+        eye1.worldY = gp.tileSize * 45;
 
-        gp.monster[1] = new MON_Eye(gp);
-        gp.monster[1].worldX = gp.tileSize * 45;
-        gp.monster[1].worldY = gp.tileSize * 50;
+        MON_Eye eye2 = new MON_Eye(gp);
+        eye2.worldX = gp.tileSize * 45;
+        eye2.worldY = gp.tileSize * 50;
 
-        gp.monster[2] = new MON_Eye(gp);
-        gp.monster[2].worldX = gp.tileSize * 40;
-        gp.monster[2].worldY = gp.tileSize * 40;
+        MON_Eye eye3 = new MON_Eye(gp);
+        eye3.worldX = gp.tileSize * 40;
+        eye3.worldY = gp.tileSize * 40;
 
-        gp.monster[3] = new MON_Eye(gp);
-        gp.monster[3].worldX = gp.tileSize * 40;
-        gp.monster[3].worldY = gp.tileSize * 45;
+        MON_Eye eye4 = new MON_Eye(gp);
+        eye4.worldX = gp.tileSize * 40;
+        eye4.worldY = gp.tileSize * 45;
 
-        gp.monster[4] = new MON_Eye(gp);
-        gp.monster[4].worldX = gp.tileSize * 45;
-        gp.monster[4].worldY = gp.tileSize * 40;
+        MON_Eye eye5 = new MON_Eye(gp);
+        eye5.worldX = gp.tileSize * 45;
+        eye5.worldY = gp.tileSize * 40;
+
+        gp.monster.add(eye1);
+        gp.monster.add(eye2);
+        gp.monster.add(eye3);
+        gp.monster.add(eye4);
+        gp.monster.add(eye5);
+    }
+
+    public void spawnMonster(int col, int row) {
+        for (int i = 0; i < gp.monster.size(); i++) {
+            if (gp.monster.get(i) != null && (gp.monster.get(i).worldX == col * gp.tileSize
+                    || gp.monster.get(i).worldY == row * gp.tileSize)) {
+                return;
+            }
+        }
+
+        for (int i = 0; i < gp.monster.size(); i++) {
+            if (gp.monster.get(i) != null) {
+                monsterCount++;
+            }
+        }
+
+        try {
+            MON_Eye newEye = new MON_Eye(gp);
+            newEye.worldX = gp.tileSize * col;
+            newEye.worldY = gp.tileSize * row;
+            gp.monster.add(newEye);
+            System.out.println(gp.monster.size());
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }

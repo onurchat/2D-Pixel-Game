@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
     //SCREEN SETTINGS
@@ -32,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable{
     //SYSTEM
     TileManager tileManager = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
+    public MouseHandler mouseH = new MouseHandler(this);
     Sound music = new Sound();
     Sound soundEffect = new Sound();
     public CollisionChecker cChecker = new CollisionChecker(this);
@@ -43,8 +45,11 @@ public class GamePanel extends JPanel implements Runnable{
     //ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
     public SuperObject obj[] = new SuperObject[10];
-    public Entity npc[] = new Entity[10];
-    public Entity monster[] = new Entity[50];
+    //public Entity npc[] = new Entity[10];
+    //public Entity monster[] = new Entity[50];
+    public ArrayList<Entity> projectileList = new ArrayList<>();
+    public ArrayList<Entity> monster = new ArrayList<>();
+    public ArrayList<Entity> npc = new ArrayList<>();
 
     //GAME STATE
     public int gameState = 3;
@@ -59,6 +64,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
+        this.addMouseListener(mouseH);
         this.setFocusable(true);
     }
 
@@ -119,18 +125,28 @@ public class GamePanel extends JPanel implements Runnable{
 
             player.update(); //PLAYER
 
-            for (int i = 0; i < npc.length; i++) { //NPCs
-                if (npc[i] != null) {
-                    npc[i].update();
+            for (int i = 0; i < npc.size(); i++) { //NPCs
+                if (npc.get(i) != null) {
+                    npc.get(i).update();
                 }
             }
-            for (int i = 0; i < monster.length; i++) { // Monsters
-                if (monster[i] != null) {
-                    if (monster[i].alive && !monster[i].dying) {
-                        monster[i].update(); 
+            for (int i = 0; i < monster.size(); i++) { // Monsters
+                if (monster.get(i) != null) {
+                    if (monster.get(i).alive && !monster.get(i).dying) {
+                        monster.get(i).update(); 
                     }
-                    if (!monster[i].alive) {
-                        monster[i] = null;
+                    if (!monster.get(i).alive) {
+                        monster.remove(i);
+                    }
+                }
+            }
+            for (int i = 0; i < projectileList.size(); i++) { // Monsters
+                if (projectileList.get(i) != null) {
+                    if (projectileList.get(i).alive) {
+                        projectileList.get(i).update();
+                    }
+                    if (!projectileList.get(i).alive) {
+                        projectileList.remove(i);
                     }
                 }
             }
@@ -167,16 +183,23 @@ public class GamePanel extends JPanel implements Runnable{
             }
 
             // DRAW NPC
-            for (int i = 0; i < npc.length; i++) {
-                if (npc[i] != null) {
-                    npc[i].draw(g2);
+            for (int i = 0; i < npc.size(); i++) {
+                if (npc.get(i) != null) {
+                    npc.get(i).draw(g2);
                 }
             }
 
             //DRAW MONSTERS
-            for (int i = 0; i < monster.length; i++) {
-                if (monster[i] != null) {
-                    monster[i].draw(g2);
+            for (int i = 0; i < monster.size(); i++) {
+                if (monster.get(i) != null) {
+                    monster.get(i).draw(g2);
+                }
+            }
+
+            //DRAW PROJECTILES
+            for (int i = 0; i < projectileList.size(); i++) {
+                if (projectileList.get(i) != null) {
+                    projectileList.get(i).draw(g2);
                 }
             }
 

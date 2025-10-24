@@ -9,10 +9,12 @@ import java.awt.image.RescaleOp;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.plaf.basic.BasicTabbedPaneUI.MouseHandler;
 
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
+import object.OBJ_Spirit;
 
 public class Player extends Entity{
 
@@ -24,6 +26,7 @@ public class Player extends Entity{
     public int hasKey = 0;
 
     int soundEffectTimer = 30;
+    int projectileTimer = 40;
 
     public Player (GamePanel gp, KeyHandler keyH) {
 
@@ -60,6 +63,8 @@ public class Player extends Entity{
         //PLAYER STATUS
         maxLife = 6;
         life = maxLife;
+
+        projectile = new OBJ_Spirit(gp);
     }
 
     public void getPlayerImage() {
@@ -99,6 +104,9 @@ public class Player extends Entity{
         }
         if (soundEffectTimer < 30) {
             soundEffectTimer++;
+        }
+        if (projectileTimer < 40) {
+            projectileTimer++;
         }
         if (isPlayerAttacking) {
             attacking();
@@ -202,6 +210,17 @@ public class Player extends Entity{
                 invincibleCounter = 0;
             }
         }
+
+        if (projectileTimer >= 40) {
+            if (gp.mouseH.mousePressed) {
+                projectile.set(worldX, worldY, gp.mouseH.mouseX, gp.mouseH.mouseY, true, this);
+
+                gp.projectileList.add(projectile);
+                gp.playSoundEffect(6);
+                gp.mouseH.mousePressed = false;
+            }
+            projectileTimer = 0;
+        }
     }
 
     public void attacking() {
@@ -252,7 +271,7 @@ public class Player extends Entity{
             solidArea.height = attackArea.height;
             //check monster collision with the updated world X, Y and solid area
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex);
+            damageMonster(monsterIndex, 2);
 
             //restore values
             worldX = currentWorldX;
@@ -295,26 +314,27 @@ public class Player extends Entity{
     public void interactNPC(int i) {
         if (i != 999) { 
             gp.gameState = gp.dialougeState;
-            gp.npc[i].speak();
+            gp.npc.get(i).speak();
        }
     }
 
     public void contactMonster(int i) {
-        if (i != 999 && !invincible && !gp.monster[i].dying && gp.monster[i].alive) {
+        if (i != 999 && !invincible && !gp.monster.get(i).dying && gp.monster.get(i).alive) {
             gp.playSoundEffect(4);
             life--;
             invincible = true;
         }
     }
 
-    public void damageMonster(int i) {
+    public void damageMonster(int i, int damage) {
         if (i != 999) {
-            if (!gp.monster[i].invincible) {
+            if (!gp.monster.get(i).invincible) {
                 gp.playSoundEffect(3);
-                gp.monster[i].life--;
-                gp.monster[i].invincible = true;
-                if (gp.monster[i].life <= 0) {
-                    gp.monster[i].dying = true;
+                gp.monster.get(i).life -= damage;
+                gp.monster.get(i).invincible = true;
+                if (gp.monster.get(i).life <= 0) {
+                    gp.monster.get(i).dying = true;
+                    gp.monster.get(i).setMonsterIndex(i);
                 }
             }
         }

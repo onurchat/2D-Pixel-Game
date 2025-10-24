@@ -1,5 +1,7 @@
 package main;
 
+import java.util.ArrayList;
+
 import entity.Entity;
 
 public class CollisionChecker {
@@ -231,18 +233,18 @@ public class CollisionChecker {
         return index;
     }
     //NPC or MONSTER COLLISION
-    public int checkEntity(Entity entity, Entity[] target) {
-         int index = 999;
+    public int checkEntity(Entity entity, ArrayList<Entity> target) {
+        int index = 999;
 
-        for (int i = 0; i < target.length; i++) {
-            if (target[i] != null) {
+        for (int i = 0; i < target.size(); i++) {
+            if (target.get(i) != null) {
                 //get entitys solid areas position (x,y) in world
                 entity.solidArea.x = entity.worldX + entity.solidArea.x;
                 entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
                 //get NPCs solid areas x and y in world
-                target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
-                target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
+                target.get(i).solidArea.x = target.get(i).worldX + target.get(i).solidArea.x;
+                target.get(i).solidArea.y = target.get(i).worldY + target.get(i).solidArea.y;
 
                 switch (entity.direction) {
                     case "up":
@@ -274,8 +276,8 @@ public class CollisionChecker {
                         entity.solidArea.x -= entity.speed;
                         break;
                 }
-                if (entity.solidArea.intersects(target[i].solidArea)) {
-                    if (target[i] != entity) {
+                if (entity.solidArea.intersects(target.get(i).solidArea)) {
+                    if (target.get(i) != entity) {
                         entity.collisionOn = true;
                         index = i;
                     }
@@ -283,8 +285,8 @@ public class CollisionChecker {
                 //resetting values
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidaAreaDefaultY; 
-                target[i].solidArea.x = target[i].solidAreaDefaultX;
-                target[i].solidArea.y = target[i].solidaAreaDefaultY;
+                target.get(i).solidArea.x = target.get(i).solidAreaDefaultX;
+                target.get(i).solidArea.y = target.get(i).solidaAreaDefaultY;
                 }
             }
         return index;
