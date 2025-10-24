@@ -53,6 +53,8 @@ public class KeyHandler implements KeyListener{
             }
         }
 
+
+
         //PLAY STATE
         if (gp.gameState == gp.playState) {
             if (code == KeyEvent.VK_W) {
@@ -89,6 +91,9 @@ public class KeyHandler implements KeyListener{
                 ePressed = true;
                 ePressTimer = 0;
             }
+            if (code == KeyEvent.VK_ESCAPE) {
+                gp.gameState = gp.optionsState;
+            }
 
             //DEBUG
             if (code == KeyEvent.VK_T) {
@@ -108,11 +113,73 @@ public class KeyHandler implements KeyListener{
             } 
         }
 
+        // OPTIONS STATE
+        else if (gp.gameState == gp.optionsState) {
+
+            if (code == KeyEvent.VK_W && !(gp.ui.subState == 1)) {
+                if (gp.ui.commandNum > 0) {
+                    gp.ui.commandNum--;
+                }
+            }
+
+            if (code == KeyEvent.VK_S && !(gp.ui.subState == 1)) {
+                if (gp.ui.commandNum < 4) {
+                    gp.ui.commandNum++;
+                }
+            }
+
+            if (code == KeyEvent.VK_ENTER) {
+                enterPressed = true;
+            }
+
+            if (code == KeyEvent.VK_ESCAPE) {
+                System.out.println("31");
+                optionsState(code);
+            }
+
+            if (code == KeyEvent.VK_A) {
+                if (gp.ui.subState == 0 && gp.ui.commandNum == 0 && gp.music.volumeScale > 0) {
+                    gp.music.volumeScale--;
+                    gp.music.checkVolume();
+                }
+                if (gp.ui.subState == 0 && gp.ui.commandNum == 1 && gp.soundEffect.volumeScale > 0) {
+                    gp.soundEffect.volumeScale--;
+                }
+            } else if (code == KeyEvent.VK_D) {
+                if (gp.ui.subState == 0 && gp.ui.commandNum == 0 && gp.music.volumeScale < 5) {
+                    gp.music.volumeScale++;
+                    gp.music.checkVolume(); 
+                }
+                if (gp.ui.subState == 0 && gp.ui.commandNum == 1 && gp.soundEffect.volumeScale < 5) {
+                    gp.soundEffect.volumeScale++;
+                }
+            }
+        }
+
         //DIALOGUE STATE
         else if (gp.gameState == gp.dialougeState) {
             if (code == KeyEvent.VK_ENTER) {
                 gp.gameState = gp.playState;
             } 
+        }
+
+        // GAME OVER STATE
+        else if (gp.gameState == gp.gameOverState) {
+            if (code == KeyEvent.VK_ENTER) {
+                enterPressed = true;
+                gp.gameState = gp.titleState;
+                gp.restart();
+            }
+        }
+    }
+
+    public void optionsState(int code) {
+        if (code == KeyEvent.VK_ESCAPE) {
+            gp.gameState = gp.playState;
+            System.out.println("workingg");
+        }
+        if (code == KeyEvent.VK_ENTER) {
+            enterPressed = true;
         }
     }
 

@@ -55,6 +55,7 @@ public class Player extends Entity{
     }
 
     public void setDefaultValues () {
+        invincible = false;
         worldX = gp.tileSize * 45; 
         worldY = gp.tileSize * 45; 
         speed = 4;
@@ -220,6 +221,11 @@ public class Player extends Entity{
                 gp.mouseH.mousePressed = false;
             }
             projectileTimer = 0;
+        }
+        if (life <= 0 && gp.gameState == gp.playState) {
+            gp.gameState = gp.gameOverState;
+            gp.stopMusic();
+            gp.playSoundEffect(7);
         }
     }
 

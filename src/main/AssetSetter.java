@@ -43,6 +43,10 @@ public class AssetSetter {
     }
 
     public void setNPC() {
+
+        if (gp.npc.size() > 0) {
+            gp.npc.remove(0);
+        }
         NPC_Reaper npc1 = new NPC_Reaper(gp);
         npc1.worldX = gp.tileSize * 30;
         npc1.worldY = gp.tileSize * 25;
@@ -51,6 +55,13 @@ public class AssetSetter {
     }
 
     public void setMonster() {
+
+        if (gp.monster.size() > 0) {
+            for (int i = 0; i < gp.monster.size(); i++) {
+                gp.monster.remove(i);
+            }
+        }
+
         MON_Eye eye1 = new MON_Eye(gp);
         eye1.worldX = gp.tileSize * 50;
         eye1.worldY = gp.tileSize * 45;

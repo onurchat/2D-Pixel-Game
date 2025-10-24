@@ -70,7 +70,6 @@ public class MON_Eye extends Entity{
             projectile.setMonsterProjectile(worldX, worldY, direction, true, this);
             gp.projectileList.add(projectile);
             shotAvailableCounter = 0;
-            System.out.println("attim");
          }
     }
 

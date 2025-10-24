@@ -11,6 +11,9 @@ public class Sound {
 
     Clip clip;
     URL soundURL[] = new URL[30];
+    FloatControl fc;
+    int volumeScale = 3;
+    float volume;
 
     public Sound() {
         soundURL[0] = getClass().getResource("/res/sound/music.wav");
@@ -20,6 +23,7 @@ public class Sound {
         soundURL[4] = getClass().getResource("/res/sound/playerhit.wav");
         soundURL[5] = getClass().getResource("/res/sound/sword.wav");
         soundURL[6] = getClass().getResource("/res/sound/spiritSE.wav");
+        soundURL[7] = getClass().getResource("/res/sound/gameover.wav");
     }
 
     public void setFile(int i) {
@@ -27,6 +31,8 @@ public class Sound {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
             clip = AudioSystem.getClip();
             clip.open(ais);
+            fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            checkVolume();
         } catch(Exception e) {
 
         }
@@ -44,9 +50,28 @@ public class Sound {
         clip.stop();
     }
 
-    public void setVolume(float f) {
-        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(f);
+    public void checkVolume() {
+        switch(volumeScale) {
+            case 0:
+                volume = -80f;
+                break;
+            case 1:
+                volume = -20f;
+                break;
+            case 2:
+                volume = -12f;
+                break;
+            case 3:
+                volume = -5f;
+                break;
+            case 4:
+                volume = 1f;
+                break;
+            case 5:
+                volume = 6f;
+                break;
+        }
+        fc.setValue(volume);
     }
 
 }
