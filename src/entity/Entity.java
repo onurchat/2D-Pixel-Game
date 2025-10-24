@@ -41,10 +41,16 @@ public class Entity {
     public boolean dying = false;
     int dyingCounter = 0;
     boolean hpBarOn = false;
+    public int shotAvailableCounter = 0;
+    
+    public Projectile projectile;
+    public int useCost;
 
     //CHARACTER STATUS
     public int maxLife;
     public int life;
+
+    public int mIndex;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -90,6 +96,10 @@ public class Entity {
     }
 
     public void update() { //identical for all entities
+
+        if (type == 2 && shotAvailableCounter < 30) {
+            shotAvailableCounter++;
+        }
 
         setAction();
 
@@ -223,9 +233,15 @@ public class Entity {
         }
     }
 
+    public void setMonsterIndex(int i) {
+        this.mIndex = i;
+    }
+
     public void dyingAnimation(Graphics2D g2) {
         dyingCounter++;
         int animationInterval = 5;
+
+        //gp.aSetter.spawnMonster(47, 47);
 
         if (dyingCounter <= animationInterval) {
             changeAlpha(g2, 0f);
@@ -255,6 +271,12 @@ public class Entity {
             dying = false;
             alive = false;
             dyingCounter = 0;
+
+            //removing monster
+            gp.monster.remove(mIndex);
+
+            //SPAWNING
+            //gp.aSetter.spawnMonster(47, 50);
         }
     }
 

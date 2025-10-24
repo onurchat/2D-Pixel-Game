@@ -4,6 +4,7 @@ import java.util.Random;
 
 import entity.Entity;
 import main.GamePanel;
+import object.OBJ_Stone;
 
 public class MON_Eye extends Entity{
 
@@ -17,9 +18,11 @@ public class MON_Eye extends Entity{
         type = 2;
         name = "Slime";
         speed = 1;
-        maxLife = 4;
+        maxLife = 6;
         life = maxLife;
         direction = "up";
+        projectile = new OBJ_Stone(gp);
+
 
         solidArea.x = 0;
         solidArea.y = 0;
@@ -62,6 +65,13 @@ public class MON_Eye extends Entity{
             }
             actionCounter = 0;
         }
+        int i = new Random().nextInt(100) + 1;
+        if (i > 75 && !projectile.alive && shotAvailableCounter >= 30) {
+            projectile.setMonsterProjectile(worldX, worldY, direction, true, this);
+            gp.projectileList.add(projectile);
+            shotAvailableCounter = 0;
+            System.out.println("attim");
+         }
     }
 
 }
