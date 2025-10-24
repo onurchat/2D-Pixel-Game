@@ -24,8 +24,8 @@ public class Projectile extends Entity{
         this.user = user;
         this.life = this.maxLife;
 
-        destWorldX = (user.worldX - (gp.screenWidth / 2) + destScreenX);
-        destWorldY = (user.worldY - (gp.screenHeight / 2) + destScreenY);
+        destWorldX = (user.worldX - (gp.screenWidth2 / 2) + destScreenX);
+        destWorldY = (user.worldY - (gp.screenHeight2 / 2) + destScreenY);
 
         float dx = gp.player.worldX - destWorldX;
         float dy = gp.player.worldY - destWorldY;
@@ -37,6 +37,7 @@ public class Projectile extends Entity{
 
         vX = dx * speed;
         vY = dy * speed;
+        System.out.println("Dest World X: " + destWorldX + "Dest World Y: " + destWorldY);
     }
 
     public void setMonsterProjectile(int worldX, int worldY, String direction, boolean alive, Entity user) {

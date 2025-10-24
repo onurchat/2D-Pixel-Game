@@ -13,16 +13,21 @@ public class MouseHandler extends MouseAdapter{
     public int mouseX;
     public int mouseY;
     public boolean mousePressed = false;
+    double scaleX;
+    double scaleY;
 
     public MouseHandler(GamePanel gp) {
         this.gp = gp;
+        scaleX = (double) gp.screenWidth / gp.screenWidth2;
+        scaleY = (double) gp.screenHeight / gp.screenHeight2;
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         if (gp.gameState == gp.playState) {
-            mouseX = e.getX();
-            mouseY = e.getY();
+            mouseX = (int) (e.getX() * scaleX);
+            mouseY = (int) (e.getY() * scaleY);
+            System.out.println(mouseX + " " + mouseY);
             mousePressed = true;
         }
     }
