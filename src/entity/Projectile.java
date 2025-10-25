@@ -37,7 +37,6 @@ public class Projectile extends Entity{
 
         vX = dx * speed;
         vY = dy * speed;
-        System.out.println("Dest World X: " + destWorldX + "Dest World Y: " + destWorldY);
     }
 
     public void setMonsterProjectile(int worldX, int worldY, String direction, boolean alive, Entity user) {
@@ -73,6 +72,7 @@ public class Projectile extends Entity{
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             if (monsterIndex != 999) {
                 gp.player.damageMonster(monsterIndex, 1);
+                generateParticle(user.projectile, gp.monster.get(monsterIndex));
                 alive = false;
             }
         }
@@ -100,6 +100,7 @@ public class Projectile extends Entity{
                 gp.player.life--;
                 gp.playSoundEffect(4);
                 gp.player.invincible = true;
+                generateParticle(user.projectile, gp.player);
                 alive = false;
             }
         }

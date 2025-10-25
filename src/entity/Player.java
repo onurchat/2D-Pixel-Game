@@ -28,6 +28,7 @@ public class Player extends Entity{
 
     int soundEffectTimer = 30;
     int projectileTimer = 40;
+    int regenTimer = 0;
 
     public Player (GamePanel gp, KeyHandler keyH) {
 
@@ -113,6 +114,12 @@ public class Player extends Entity{
         if (isPlayerAttacking) {
             attacking();
         }
+        if (regenTimer < 600) {
+            regenTimer++;
+        } else if (regenTimer >= 600 && (maxLife - life >= 1)) {
+            life++;
+            regenTimer = 0;
+        } 
 
         if (keyH.upPressed || keyH.downPressed
             || keyH.rightPressed || keyH.leftPressed) {
@@ -278,7 +285,7 @@ public class Player extends Entity{
             solidArea.height = attackArea.height;
             //check monster collision with the updated world X, Y and solid area
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex, 2);
+            damageMonster(monsterIndex, 4);
 
             //restore values
             worldX = currentWorldX;

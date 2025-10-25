@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Random;
+
 import entity.NPC_Reaper;
 import monster.MON_Eye;
 import object.OBJ_Chest;
@@ -83,28 +85,38 @@ public class AssetSetter {
         gp.monster.add(eye5);
     }
 
-    public void spawnMonster(int col, int row) {
+    public void spawnMonster() {
+
+        Random random = new Random();
+        int randomCol = random.nextInt(52) + 18;
+        int randomRow = random.nextInt(29) + 29;
         
         for (int i = 0; i < gp.monster.size(); i++) {
-            if ((Math.abs(col * gp.tileSize - gp.monster.get(i).worldX) < 30)
-                    || (Math.abs(row * gp.tileSize - gp.monster.get(i).worldY) < 30)) {
+            if ((Math.abs(randomCol * gp.tileSize - gp.monster.get(i).worldX) < 30)
+                    || (Math.abs(randomRow * gp.tileSize - gp.monster.get(i).worldY) < 30)) {
                 System.out.println("occupied by monster!");
                 return;
             }
         }
 
 
-        if (Math.abs(col * gp.tileSize - gp.player.worldX) < 30 
-            || Math.abs(row * gp.tileSize - gp.player.worldY) < 30) {
+        if (Math.abs(randomCol * gp.tileSize - gp.player.worldX) < 30 
+            || Math.abs(randomRow * gp.tileSize - gp.player.worldY) < 30) {
             System.out.println("occupied by PLAYER!");
             return;
         }
 
         try {
             MON_Eye newEye = new MON_Eye(gp);
-            newEye.worldX = gp.tileSize * col;
-            newEye.worldY = gp.tileSize * row;
+            newEye.worldX = gp.tileSize * randomCol;
+            newEye.worldY = gp.tileSize * randomRow;
             gp.monster.add(newEye);
+            newEye.checkCollision();
+            if (newEye.collisionOn) {
+                newEye.alive = false;
+                gp.monster.remove(newEye);
+                System.out.println("got stuck!");
+            }
             System.out.println(gp.monster.size());
 
         } catch (ArrayIndexOutOfBoundsException e) {

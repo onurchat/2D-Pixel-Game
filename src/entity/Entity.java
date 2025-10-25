@@ -386,4 +386,41 @@ public class Entity {
         }
     }
 
+    //PARTICLES BLUEPRINT METHODS
+    public Color getParticleColor() {
+        Color color = null;
+        return color;
+    }
+    
+    public int getParticleSize() {
+        int size = 0;
+        return size;
+    }
+    
+    public int getParticleSpeed() {
+        int speed = 0;
+        return speed;
+    }
+    
+    public int getParticleMaxLife() {
+        int maxLife = 20;
+        return maxLife;
+    }
+
+    public void generateParticle(Entity generator, Entity target) {
+
+        Color color = generator.getParticleColor();
+        int size = generator.getParticleSize();
+        int speed = generator.getParticleSpeed();
+        int maxLife = generator.getParticleMaxLife();
+
+        Particle p1 = new Particle(gp, target, color, size, speed, maxLife, -2, -1);
+        gp.particleList.add(p1);
+        Particle p2 = new Particle(gp, target, color, size, speed, maxLife, 2, -1);
+        gp.particleList.add(p2);
+        Particle p3 = new Particle(gp, target, color, size, speed, maxLife, -2, 1);
+        gp.particleList.add(p3);
+        Particle p4 = new Particle(gp, target, color, size, speed, maxLife, 2, 1);
+        gp.particleList.add(p4);
+    }
 }
