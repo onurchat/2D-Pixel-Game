@@ -18,12 +18,12 @@ public class AssetSetter {
     public void setObject() {
 
         gp.obj[0] = new OBJ_Key(gp);
-        gp.obj[0].worldX = 74 * gp.tileSize;
-        gp.obj[0].worldY = 47 * gp.tileSize;
+        gp.obj[0].worldX = 76 * gp.tileSize;
+        gp.obj[0].worldY = 45 * gp.tileSize;
 
         gp.obj[1] = new OBJ_Key(gp);
-        gp.obj[1].worldX = 61 * gp.tileSize;
-        gp.obj[1].worldY = 72 * gp.tileSize;
+        gp.obj[1].worldX = 75 * gp.tileSize;
+        gp.obj[1].worldY = 45 * gp.tileSize;
 
         gp.obj[2] = new OBJ_Door(gp);
         gp.obj[2].worldX = 47 * gp.tileSize;
@@ -34,12 +34,12 @@ public class AssetSetter {
         gp.obj[3].worldY = 28 * gp.tileSize;
 
         gp.obj[4] = new OBJ_Chest(gp);
-        gp.obj[4].worldX = 28 * gp.tileSize;
-        gp.obj[4].worldY = 23 * gp.tileSize;
+        gp.obj[4].worldX = 32 * gp.tileSize;
+        gp.obj[4].worldY = 27 * gp.tileSize;
 
         gp.obj[5] = new OBJ_Chest(gp);
-        gp.obj[5].worldX = 55 * gp.tileSize;
-        gp.obj[5].worldY = 70 * gp.tileSize;
+        gp.obj[5].worldX = 61 * gp.tileSize;
+        gp.obj[5].worldY = 66 * gp.tileSize;
     }
 
     public void setNPC() {

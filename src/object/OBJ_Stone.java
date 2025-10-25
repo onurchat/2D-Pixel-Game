@@ -11,7 +11,7 @@ public class OBJ_Stone extends Projectile{
         this.gp = gp;
         name = "Stone";
         direction = "up";
-        speed = 4;
+        speed = 5;
         maxLife = 100;
         life = maxLife;
         useCost = 2;

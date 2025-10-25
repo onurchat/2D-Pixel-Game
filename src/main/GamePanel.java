@@ -47,13 +47,15 @@ public class GamePanel extends JPanel implements Runnable {
     public KeyHandler keyH = new KeyHandler(this);
     public MouseHandler mouseH = new MouseHandler(this);
     Sound music = new Sound();
-    Sound soundEffect = new Sound();
+    public Sound soundEffect = new Sound();
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
     public EventHandler eHandler = new EventHandler(this);
     Thread gameThread;
     public PathFinder pFinder = new PathFinder(this);
+    public int monsterTimer = 0;
+    public int monsterMultiplyer = 1;
 
     // ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
@@ -103,6 +105,8 @@ public class GamePanel extends JPanel implements Runnable {
         ui.playTime = 0;
         player.eyesKilled = 0;
         projectileList.clear();
+        player.hasKey = 0;
+        player.maxLife = 6;
     }
 
     public void setFullScreen() {
@@ -163,6 +167,17 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
 
         if (gameState == playState) {
+            if (monsterTimer < 300) {
+                monsterTimer++;
+            } else if (monsterTimer >= 300) {
+                Random random = new Random();
+                int randomCol = random.nextInt(13) + 35;
+                int randomRow = random.nextInt(10) + 48;
+                aSetter.spawnMonster(randomCol, randomRow);      
+                monsterTimer = 0;
+                monsterMultiplyer++;
+                System.out.println(monsterMultiplyer);
+            }
 
             player.update(); // PLAYER
 

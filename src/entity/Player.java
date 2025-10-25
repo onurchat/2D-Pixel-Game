@@ -207,7 +207,7 @@ public class Player extends Entity{
         }
         if (invincible) {
             invincibleCounter++;
-            if (invincibleCounter > 60) {
+            if (invincibleCounter > 30) {
                 invincible = false;
                 invincibleCounter = 0;
             }
@@ -313,6 +313,12 @@ public class Player extends Entity{
                     } else {
                         gp.ui.showMessage("You need a key.");
                     }
+                    break;
+                case "Chest":
+                    gp.playSoundEffect(8);
+                    maxLife += 2;
+                    gp.obj[i] = null;
+                    gp.ui.showMessage("You gained a heart!");
                     break;
             }
         }

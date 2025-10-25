@@ -50,11 +50,13 @@ public class EventHandler {
             dPitCounter = 0;
             gp.player.invincible = true;
         }
-        if (hit(32, 26, "any") || hit(31, 27, "any")) {
+        if (hit(25, 30, "any") || hit(24, 29, "any") || hit(26, 29, "any") || hit(25, 28, "any")) {
             if (healTriggerCounter >= 60) {
-                if (healCounter >= 600) {
+                if (gp.player.life == gp.player.maxLife) {
+                    gp.ui.showMessage("You already have full health!");
+                } else if (healCounter >= 600) {
                     healing(gp.playState);
-                    healCounter = 0;
+                    healCounter = 0;    
                 } else {
                     System.out.println(healCounter);
                     gp.ui.showMessage("Wait a while to heal again!");
@@ -99,6 +101,12 @@ public class EventHandler {
         gp.gameState = gameState;
         // gp.ui.currentDialogue = "You healed";
         gp.ui.showMessage("The healing cauldron healed you!");
-        gp.player.life++;
+        if (gp.player.maxLife - gp.player.life >= 3) {
+            gp.player.life += 3;
+        } else if (gp.player.maxLife - gp.player.life >= 2) {
+            gp.player.life += 2;    
+        } else {
+            gp.player.life += 1;
+        }
     }
 }

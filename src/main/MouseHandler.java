@@ -27,7 +27,6 @@ public class MouseHandler extends MouseAdapter{
         if (gp.gameState == gp.playState) {
             mouseX = (int) (e.getX() * scaleX);
             mouseY = (int) (e.getY() * scaleY);
-            System.out.println(mouseX + " " + mouseY);
             mousePressed = true;
         }
     }

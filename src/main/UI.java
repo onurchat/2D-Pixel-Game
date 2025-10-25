@@ -96,8 +96,11 @@ public class UI {
 
         //message
         if (messageOn) {
+            g2.setColor(new Color(0, 0, 0));
             g2.setFont(g2.getFont().deriveFont(15F));
             int x = getXForCenteredText(message);
+            g2.drawString(message, x + 2, gp.tileSize * 14 + 2);
+            g2.setColor(new Color(255, 255, 255));
             g2.drawString(message, x, gp.tileSize * 14);
 
             msgCounter++;
@@ -307,6 +310,7 @@ public class UI {
         if (commandNum == 4) {
             g2.drawString(">", textX - 20, textY);
             if (gp.keyH.enterPressed) {
+                gp.music.play();
                 commandNum = 0;
                 subState = 0;
                 gp.gameState = gp.playState; 

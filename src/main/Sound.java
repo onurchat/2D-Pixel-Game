@@ -24,6 +24,12 @@ public class Sound {
         soundURL[5] = getClass().getResource("/res/sound/sword.wav");
         soundURL[6] = getClass().getResource("/res/sound/spiritSE.wav");
         soundURL[7] = getClass().getResource("/res/sound/gameover.wav");
+        soundURL[8] = getClass().getResource("/res/sound/chest.wav");
+        soundURL[9] = getClass().getResource("/res/sound/click.wav");
+        soundURL[10] = getClass().getResource("/res/sound/dia0.wav");
+        soundURL[11] = getClass().getResource("/res/sound/dia1.wav");
+        soundURL[12] = getClass().getResource("/res/sound/dia2.wav");
+        soundURL[13] = getClass().getResource("/res/sound/dia3.wav");
     }
 
     public void setFile(int i) {

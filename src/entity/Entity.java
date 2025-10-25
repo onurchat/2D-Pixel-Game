@@ -68,6 +68,19 @@ public class Entity {
             dialogueIndex = 0;
         }
         gp.ui.currentDialogue = dialogues[dialogueIndex];
+        if (dialogueIndex == 0) {
+            gp.soundEffect.stop();
+            gp.playSoundEffect(10);
+        } else if (dialogueIndex == 1) {
+            gp.soundEffect.stop();
+            gp.playSoundEffect(11);
+        } else if (dialogueIndex == 2) {
+            gp.soundEffect.stop();
+            gp.playSoundEffect(12);
+        } else if (dialogueIndex == 3) {
+            gp.soundEffect.stop();
+            gp.playSoundEffect(13);
+        }
         dialogueIndex++;
 
         switch (gp.player.direction) {
@@ -248,12 +261,6 @@ public class Entity {
         dyingCounter++;
         int animationInterval = 5;
 
-
-        Random random = new Random();
-        int randomCol = random.nextInt(13) + 35;
-        int randomRow = random.nextInt(10) + 48;
-        gp.aSetter.spawnMonster(randomCol, randomRow);
-
         if (dyingCounter <= animationInterval) {
             changeAlpha(g2, 0f);
         }
@@ -288,9 +295,6 @@ public class Entity {
 
             //SPAWNING
             //gp.aSetter.spawnMonster(47, 50);
-            randomCol = random.nextInt(13) + 35;
-            randomRow = random.nextInt(10) + 48;
-            gp.aSetter.spawnMonster(randomCol, randomRow);
         }
     }
 
