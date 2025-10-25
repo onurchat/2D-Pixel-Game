@@ -114,7 +114,7 @@ public class Player extends Entity{
         if (isPlayerAttacking) {
             attacking();
         }
-        if (regenTimer < 600) {
+        if (regenTimer < 600 && life != maxLife) {
             regenTimer++;
         } else if (regenTimer >= 600 && (maxLife - life >= 1)) {
             life++;

@@ -108,6 +108,7 @@ public class GamePanel extends JPanel implements Runnable {
         projectileList.clear();
         player.hasKey = 0;
         player.maxLife = 6;
+        monsterMultiplyer = 1;
     }
 
     public void setFullScreen() {
@@ -156,7 +157,6 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -280,6 +280,7 @@ public class GamePanel extends JPanel implements Runnable {
             long drawEnd = System.nanoTime();
             long passed = drawEnd - drawStart;
             g2.setColor(Color.white);
+            g2.setFont(g2.getFont().deriveFont(20F));
             g2.drawString("Draw Time: " + passed, 10, 400);
             g2.drawString("FPS: " + fps, 10, 450);
             g2.drawString("Sprite Number: " + this.player.spriteCounter, 10, 500);

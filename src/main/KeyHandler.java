@@ -147,6 +147,7 @@ public class KeyHandler implements KeyListener{
             if (code == KeyEvent.VK_ESCAPE) {
                 optionsState(code);
                 gp.music.play();
+                gp.music.loop();
                 gp.playSoundEffect(9);
             }
 

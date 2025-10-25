@@ -36,6 +36,7 @@ public class UI {
     int minutes = 0;
     int seconds = 0;
     String timeString;
+    Image deadEye;
 
     double playTime;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
@@ -55,11 +56,16 @@ public class UI {
         OBJ_Key key = new OBJ_Key(gp);
         keyImage = key.image;
 
-        //CREATE HUD OBJECT
+        // CREATE HUD OBJECT
         SuperObject heart = new OBJ_Heart(gp);
         heartFull = heart.image;
         heartHalf = heart.image2;
         heartBlank = heart.image3;
+        try {
+            deadEye = ImageIO.read(getClass().getResourceAsStream("/res/monster/deadEye.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void showMessage(String text) {
@@ -69,8 +75,8 @@ public class UI {
     }
 
     public void draw(Graphics2D g2) {
-        //DONT CREATE INSTANCE IN DRAW METHODS!!!
-        //BECAUSE IT GETS CALLED 60 TIMES PER SECOND
+        // DONT CREATE INSTANCE IN DRAW METHODS!!!
+        // BECAUSE IT GETS CALLED 60 TIMES PER SECOND
         this.g2 = g2;
         g2.setFont(font_dogica);
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20F));
@@ -80,7 +86,7 @@ public class UI {
             g2.drawString(" " + gp.player.hasKey, 74, 137);
         }
 
-        //TIME
+        // TIME
         if (gp.gameState == gp.playState) {
             playTime += (double) 1 / 60;
             minutes = (int) playTime / 60;
@@ -89,12 +95,13 @@ public class UI {
         }
 
         if (gp.gameState != gp.titleState) {
-            g2.drawString("Time:" + timeString, gp.screenWidth2 - 600, 65);
-            g2.drawString("Eyes Killed:" + gp.player.eyesKilled, gp.screenWidth2 - 670, 120);
+            g2.drawString(timeString, gp.screenWidth - 140, 65);
+            g2.drawImage(deadEye, gp.screenWidth - 140, 90, gp.tileSize, gp.tileSize, null);
+            g2.drawString(" " + gp.player.eyesKilled, gp.screenWidth - 100, 120);
             drawPlayerLife();
         }
 
-        //message
+        // message
         if (messageOn) {
             g2.setColor(new Color(0, 0, 0));
             g2.setFont(g2.getFont().deriveFont(15F));
@@ -111,13 +118,13 @@ public class UI {
             }
         }
 
-        //TITLE STATE
+        // TITLE STATE
         if (gp.gameState == gp.titleState) {
             drawTitleScreen();
-        } 
+        }
 
         if (gp.gameState == gp.playState) {
-            //do stuff later
+            // do stuff later
         }
 
         if (gp.gameState == gp.pauseState) {
@@ -128,12 +135,12 @@ public class UI {
             drawDialougeScreen();
         }
 
-        //OPTIONS STATE
+        // OPTIONS STATE
         if (gp.gameState == gp.optionsState) {
             drawOptionsScreen();
         }
-        
-        //GAME OVER STATE
+
+        // GAME OVER STATE
         if (gp.gameState == gp.gameOverState) {
             drawGameOverScreen();
         }
@@ -141,23 +148,23 @@ public class UI {
 
     public void drawPlayerLife() {
 
-        int x = gp.tileSize / 2;
-        int y = gp.tileSize / 2;
+        int x = gp.tileSize;
+        int y = gp.tileSize;
         int i = 0;
 
-        //DRAW MAX LIFE
+        // DRAW MAX LIFE
         while (i < gp.player.maxLife / 2) {
             g2.drawImage(heartBlank, x, y, null);
             i++;
             x += gp.tileSize + 5;
         }
-        x = gp.tileSize / 2;
-        y = gp.tileSize / 2;
+        x = gp.tileSize;
+        y = gp.tileSize;
         i = 0;
 
-        //DRAW CURRENT LIFE
+        // DRAW CURRENT LIFE
         while (i < gp.player.life) {
-            g2.drawImage(heartHalf, x, y, null);  
+            g2.drawImage(heartHalf, x, y, null);
             i++;
             if (i < gp.player.life) {
                 g2.drawImage(heartFull, x, y, null);
@@ -172,20 +179,20 @@ public class UI {
         g2.setColor(new Color(148, 59, 59));
         g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
 
-        //TITLE NAME
+        // TITLE NAME
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 45F));
         String text = "Depths of Hell";
         int x = getXForCenteredText(text);
         int y = gp.tileSize * 3;
 
-        //SHADOW
+        // SHADOW
         g2.setColor(Color.black);
         g2.drawString(text, x + 5, y + 5);
-        //MAIN COLOR
+        // MAIN COLOR
         g2.setColor(Color.white);
         g2.drawString(text, x, y);
 
-        //IMAGE
+        // IMAGE
         try {
             BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/skel1.png"));
             x = gp.screenWidth / 2 - (gp.tileSize * 2) / 2;
@@ -195,7 +202,7 @@ public class UI {
             e.printStackTrace();
         }
 
-        //MENU
+        // MENU
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 22F));
         text = "NEW GAME";
         x = getXForCenteredText(text);
@@ -234,11 +241,16 @@ public class UI {
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(15f));
 
-        //SUB WINDOW
-        int frameX = gp.screenWidth2 / 3 - gp.tileSize - 15;
-        int frameY = gp.tileSize * 3;
+        // SUB WINDOW
         int frameWidth = gp.tileSize * 10;
         int frameHeight = gp.tileSize * 12;
+        //int frameX = gp.screenWidth2 / 3 - gp.tileSize - 15;
+        // int frameY = gp.tileSize * 3;
+
+        //int frameX = (gp.screenWidth - frameWidth) / 2 + (gp.screenWidth2 - gp.screenWidth) / 2;
+        int frameX = getXForCenteredText("AAAAAAAAAAAAAAAAAAAAAAAAA");
+        int frameY = (gp.screenHeight - frameHeight) / 2;
+
         drawSubWindow(frameX - gp.tileSize, frameY - gp.tileSize, frameWidth, frameHeight);
 
         switch (subState) {
@@ -259,31 +271,31 @@ public class UI {
         int textX;
         int textY;
 
-        //TITLE
+        // TITLE
         String text = "Options";
         textX = getXForCenteredText(text);
         textY = frameY + gp.tileSize;
         g2.drawString(text, textX, textY);
 
-        //FULL SCREEN ON-OFF
+        // FULL SCREEN ON-OFF
         textX = frameX + gp.tileSize / 2;
         textY += gp.tileSize * 2;
 
-        //MUSIC 
+        // MUSIC
         textY += gp.tileSize;
         g2.drawString("Music", textX, textY);
         if (commandNum == 0) {
             g2.drawString(">", textX - 20, textY);
         }
 
-        //SE
+        // SE
         textY += gp.tileSize;
         g2.drawString("SE", textX, textY);
         if (commandNum == 1) {
             g2.drawString(">", textX - 20, textY);
         }
 
-        //CONTROL
+        // CONTROL
         textY += gp.tileSize;
         g2.drawString("Controls", textX, textY);
         if (commandNum == 2) {
@@ -294,7 +306,7 @@ public class UI {
             }
         }
 
-        //END GAME
+        // END GAME
         textY += gp.tileSize;
         g2.drawString("Close Game", textX, textY);
         if (commandNum == 3) {
@@ -304,7 +316,7 @@ public class UI {
             }
         }
 
-        //BACK
+        // BACK
         textY += gp.tileSize * 2;
         g2.drawString("Back", textX, textY);
         if (commandNum == 4) {
@@ -313,21 +325,21 @@ public class UI {
                 gp.music.play();
                 commandNum = 0;
                 subState = 0;
-                gp.gameState = gp.playState; 
+                gp.gameState = gp.playState;
             }
         }
 
-        //FULLSCREEN CHECKBOX
+        // FULLSCREEN CHECKBOX
         textX = frameX + gp.tileSize * 6;
         textY = frameY + gp.tileSize * 3 - 20;
 
-        //MUSIC VOLUME
+        // MUSIC VOLUME
         textY += gp.tileSize;
-        g2.drawRect(textX - gp.tileSize, textY, 120, 20); 
+        g2.drawRect(textX - gp.tileSize, textY, 120, 20);
         int volumeWidth = 24 * gp.music.volumeScale;
         g2.fillRect(textX - gp.tileSize, textY, volumeWidth, 20);
-        
-        //SE
+
+        // SE
         textY += gp.tileSize;
         g2.drawRect(textX - gp.tileSize, textY, 120, 20);
         volumeWidth = 24 * gp.soundEffect.volumeScale;
@@ -339,7 +351,7 @@ public class UI {
         int y = gp.tileSize * 1;
         int width = gp.screenWidth - (gp.tileSize * 4);
         int height = gp.tileSize * 4;
-        
+
         drawSubWindow(x, y, width, height);
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20F));
@@ -354,11 +366,11 @@ public class UI {
 
     public void drawSubWindow(int x, int y, int width, int height) {
 
-        Color c = new Color(30, 0, 0, 240); //last number = opacity
+        Color c = new Color(30, 0, 0, 240); // last number = opacity
         g2.setColor(c);
-        g2.fillRoundRect(x, y, width, height, 30, 30); //30 = how round it is
+        g2.fillRoundRect(x, y, width, height, 30, 30); // 30 = how round it is
 
-        //OUTLINE
+        // OUTLINE
         c = new Color(255, 204, 204);
         g2.setColor(c);
         g2.setStroke(new BasicStroke(5));
@@ -375,7 +387,7 @@ public class UI {
         String text;
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 80f));
 
-        //SHADOW
+        // SHADOW
         text = "GAME OVER";
         g2.setColor(Color.black);
         x = getXForCenteredText(text) + 5;
@@ -389,7 +401,7 @@ public class UI {
         y = gp.tileSize * 6;
         g2.drawString(text, x, y);
 
-        //Back to Title Screen
+        // Back to Title Screen
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20));
         text = "Back to Title Screen";
         x = getXForCenteredText(text);
@@ -402,7 +414,7 @@ public class UI {
         int textX;
         int textY;
 
-        //TITLE
+        // TITLE
         String text = "Controls";
         textX = getXForCenteredText(text);
         textY = frameY + gp.tileSize;
@@ -440,7 +452,7 @@ public class UI {
         g2.drawString("T", textX, textY);
         textY += gp.tileSize;
 
-        //BACK
+        // BACK
         textX = frameX + gp.tileSize;
         textY = frameY + gp.tileSize * 9;
 

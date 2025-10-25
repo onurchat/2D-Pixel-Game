@@ -117,7 +117,6 @@ public class AssetSetter {
                 gp.monster.remove(newEye);
                 System.out.println("got stuck!");
             }
-            System.out.println(gp.monster.size());
 
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println(e.getMessage());
