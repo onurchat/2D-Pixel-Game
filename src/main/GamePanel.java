@@ -65,6 +65,7 @@ public class GamePanel extends JPanel implements Runnable {
     public ArrayList<Entity> projectileList = new ArrayList<>();
     public ArrayList<Entity> monster = new ArrayList<>();
     public ArrayList<Entity> npc = new ArrayList<>();
+    public ArrayList<Entity> particleList = new ArrayList<>();
 
     // GAME STATE
     public int gameState = 3;
@@ -167,13 +168,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
 
         if (gameState == playState) {
-            if (monsterTimer < 300) {
+            if (monsterTimer < 600) {
                 monsterTimer++;
-            } else if (monsterTimer >= 300) {
-                Random random = new Random();
-                int randomCol = random.nextInt(13) + 35;
-                int randomRow = random.nextInt(10) + 48;
-                aSetter.spawnMonster(randomCol, randomRow);      
+            } else if (monsterTimer >= 600) {
+                for (int i = 0; i < monsterMultiplyer; i++) {
+                    aSetter.spawnMonster();
+                }    
                 monsterTimer = 0;
                 monsterMultiplyer++;
                 System.out.println(monsterMultiplyer);
@@ -203,6 +203,16 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                     if (!projectileList.get(i).alive) {
                         projectileList.remove(i);
+                    }
+                }
+            }
+            for (int i = 0; i < particleList.size(); i++) { // projectiles
+                if (particleList.get(i) != null) {
+                    if (particleList.get(i).alive) {
+                        particleList.get(i).update();
+                    }
+                    if (!particleList.get(i).alive) {
+                        particleList.remove(i);
                     }
                 }
             }
@@ -256,6 +266,12 @@ public class GamePanel extends JPanel implements Runnable {
 
             player.draw(g2); // drawing player
 
+            for (int i = 0; i < particleList.size(); i++) {
+                if (particleList.get(i) != null) {
+                    particleList.get(i).draw(g2);
+                }
+            }
+
             ui.draw(g2); // UI ON TOP
         }
 
@@ -267,6 +283,7 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString("Draw Time: " + passed, 10, 400);
             g2.drawString("FPS: " + fps, 10, 450);
             g2.drawString("Sprite Number: " + this.player.spriteCounter, 10, 500);
+            g2.drawString("N. of Eyes Alive: " + this.monster.size(), 10, 550);
         }
     }
 
@@ -324,6 +341,13 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             player.draw(g2); // drawing player
+
+            //DRAW PARTICLES
+            for (int i = 0; i < particleList.size(); i++) {
+                if (particleList.get(i) != null) {
+                    particleList.get(i).draw(g2);
+                }
+            }
 
             ui.draw(g2); // UI ON TOP
         }
