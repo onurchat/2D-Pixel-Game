@@ -10,18 +10,19 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
-
 import javax.imageio.ImageIO;
-
-import object.OBJ_Heart;
-import object.OBJ_Key;
+import object.ObjHearth;
+import object.ObjKey;
 import object.SuperObject;
 
+/**
+ * The class handles all on-screen user interface elements in the game.
+ */
 public class UI {
 
     GamePanel gp;
     Graphics2D g2;
-    Font font_dogica;
+    Font fontDogica;
     BufferedImage heartFull;
     BufferedImage heartHalf;
     BufferedImage heartBlank;
@@ -41,23 +42,28 @@ public class UI {
     double playTime;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
 
+    /**
+     * Constructs a new UI ibject and loads required images.
+     * 
+     * @param gp the current gamepanel instance
+     */
     public UI(GamePanel gp) {
         this.gp = gp;
 
         try {
             InputStream is = getClass().getResourceAsStream("/res/font/dogica.otf");
-            font_dogica = Font.createFont(Font.TRUETYPE_FONT, is);
+            fontDogica = Font.createFont(Font.TRUETYPE_FONT, is);
         } catch (FontFormatException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        OBJ_Key key = new OBJ_Key(gp);
+        ObjKey key = new ObjKey(gp);
         keyImage = key.image;
 
         // CREATE HUD OBJECT
-        SuperObject heart = new OBJ_Heart(gp);
+        SuperObject heart = new ObjHearth(gp);
         heartFull = heart.image;
         heartHalf = heart.image2;
         heartBlank = heart.image3;
@@ -68,21 +74,32 @@ public class UI {
         }
     }
 
+    /**
+     * Show a text message to the player.
+     * 
+     * @param text the message text to display
+     */
     public void showMessage(String text) {
         message = text;
         messageOn = true;
         msgCounter = 0;
     }
 
+    /**
+     * Draws the entire UI.
+     * 
+     * @param g2 the Graphics2D object used for drawing
+     */
     public void draw(Graphics2D g2) {
         // DONT CREATE INSTANCE IN DRAW METHODS!!!
         // BECAUSE IT GETS CALLED 60 TIMES PER SECOND
         this.g2 = g2;
-        g2.setFont(font_dogica);
+        g2.setFont(fontDogica);
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20F));
         g2.setColor(Color.white);
         if (gp.player.hasKey > 0) {
-            g2.drawImage(keyImage, gp.tileSize / 2, gp.tileSize * 2, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(keyImage, gp.tileSize / 2,
+                gp.tileSize * 2, gp.tileSize, gp.tileSize, null);
             g2.drawString(" " + gp.player.hasKey, 74, 137);
         }
 
@@ -146,6 +163,9 @@ public class UI {
         }
     }
 
+    /**
+     * Draws the players life bar.
+     */
     public void drawPlayerLife() {
 
         int x = gp.tileSize;
@@ -174,6 +194,9 @@ public class UI {
         }
     }
 
+    /**
+     * Draws the title screen.
+     */
     public void drawTitleScreen() {
 
         g2.setColor(new Color(148, 59, 59));
@@ -194,7 +217,8 @@ public class UI {
 
         // IMAGE
         try {
-            BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/skel1.png"));
+            BufferedImage image = ImageIO.read(getClass()
+                .getResourceAsStream("/res/tiles/skel1.png"));
             x = gp.screenWidth / 2 - (gp.tileSize * 2) / 2;
             y += gp.tileSize * 2;
             g2.drawImage(image, x, y, gp.tileSize * 2, gp.tileSize * 2, null);
@@ -222,6 +246,9 @@ public class UI {
 
     }
 
+    /**
+     * Draws the pause screen.
+     */
     public void drawPauseScreen() {
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
         String text = "PAUSED";
@@ -231,12 +258,21 @@ public class UI {
         g2.drawString(text, x, y);
     }
 
+    /**
+     * Returns the X coordinate to center the text.
+     * 
+     * @param text the text string to center.
+     * @return The X coordinate for centered text
+     */
     public int getXForCenteredText(String text) {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gp.screenWidth / 2 - length / 2;
         return x;
     }
 
+    /**
+     * Draw Options screen.
+     */
     public void drawOptionsScreen() {
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(15f));
@@ -262,11 +298,19 @@ public class UI {
                 break;
             case 2:
                 break;
+            default:
+                break;
         }
 
         gp.keyH.enterPressed = false;
     }
 
+    /**
+     * Draws the top level options menu.
+     * 
+     * @param frameX X position of the frame
+     * @param frameY y position of the Frame
+     */
     public void optionsTop(int frameX, int frameY) {
         int textX;
         int textY;
@@ -346,6 +390,9 @@ public class UI {
         g2.fillRect(textX - gp.tileSize, textY, volumeWidth, 20);
     }
 
+    /**
+     * Draw Dialogue Screen.
+     */
     public void drawDialougeScreen() {
         int x = gp.tileSize * 2;
         int y = gp.tileSize * 1;
@@ -364,6 +411,14 @@ public class UI {
         }
     }
 
+    /**
+     * Draw a semi transplant subwindow for menu/dialogue.
+     * 
+     * @param x X position of the window
+     * @param y Y position of the window
+     * @param width Width of the window
+     * @param height height of the window
+     */
     public void drawSubWindow(int x, int y, int width, int height) {
 
         Color c = new Color(30, 0, 0, 240); // last number = opacity
@@ -378,6 +433,9 @@ public class UI {
 
     }
 
+    /**
+     * Draw game over screen.
+     */
     public void drawGameOverScreen() {
         g2.setColor(new Color(10, 0, 0, 180));
         g2.fillRect(0, 0, gp.screenWidth2, gp.screenHeight2);
@@ -408,8 +466,14 @@ public class UI {
         y += gp.tileSize * 8;
         g2.drawString(text, x, y);
         g2.drawString(">", x - 40, y);
-    }
+    }   
 
+    /**
+     * Deaws the controls options menu.
+     * 
+     * @param frameX X position of the frame.
+     * @param frameY Y position of the frame.
+     */
     public void optionsControls(int frameX, int frameY) {
         int textX;
         int textY;

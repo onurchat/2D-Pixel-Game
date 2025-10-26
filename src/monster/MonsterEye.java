@@ -1,16 +1,23 @@
 package monster;
 
-import java.util.Random;
-
 import entity.Entity;
+import java.util.Random;
 import main.GamePanel;
-import object.OBJ_Stone;
+import object.ObjStone;
 
-public class MON_Eye extends Entity{
+/**
+ * Represents the Eye monster in the game.
+ */
+public class MonsterEye extends Entity {
 
     GamePanel gp;
 
-    public MON_Eye(GamePanel gp) {
+    /**
+     * Constructs a new Eye monster.
+     * 
+     * @param gp the current Gamepanel Instance.
+     */
+    public MonsterEye(GamePanel gp) {
         super(gp);
 
         this.gp = gp;
@@ -21,7 +28,7 @@ public class MON_Eye extends Entity{
         maxLife = 6;
         life = maxLife;
         direction = "up";
-        projectile = new OBJ_Stone(gp);
+        projectile = new ObjStone(gp);
 
 
         solidArea.x = 5;
@@ -35,6 +42,10 @@ public class MON_Eye extends Entity{
 
         getImage();
     }
+
+    /**
+     * Loads the images for the Eye monster.
+     */
     public void getImage() {
         up1 = setup("/res/monster/eye1", gp.tileSize, gp.tileSize);
         up2 = setup("/res/monster/eye2", gp.tileSize, gp.tileSize);
@@ -46,7 +57,9 @@ public class MON_Eye extends Entity{
         right2 = setup("/res/monster/eye2", gp.tileSize, gp.tileSize);
     }
 
-    //override the update method so if player gets close, monsters get aggro
+    /**
+     * Updates monster each frame.
+     */
     public void update() {
         super.update();
         int xDistance = Math.abs(worldX - gp.player.worldX);
@@ -61,6 +74,10 @@ public class MON_Eye extends Entity{
             onPath = false;
         }
     }
+
+    /**
+     * Determines the next action for the monster.
+     */
     public void setAction() {
 
         if (onPath) {

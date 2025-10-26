@@ -1,20 +1,25 @@
 package main;
 
 import java.net.URL;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
+/**
+ * The class is responsible for managing all audio playback within the game.
+ */
 public class Sound {
 
     Clip clip;
-    URL soundURL[] = new URL[30];
+    URL[] soundURL = new URL[30];
     FloatControl fc;
     int volumeScale = 3;
     float volume;
 
+    /**
+     * Constructs a new sound object.
+     */
     public Sound() {
         soundURL[0] = getClass().getResource("/res/sound/music.wav");
         soundURL[1] = getClass().getResource("/res/sound/key.wav");
@@ -32,6 +37,11 @@ public class Sound {
         soundURL[13] = getClass().getResource("/res/sound/dia3.wav");
     }
 
+    /**
+     * Loads a sound file.
+     * 
+     * @param i the index of the sound file
+     */
     public void setFile(int i) {
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
@@ -39,8 +49,8 @@ public class Sound {
             clip.open(ais);
             fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             checkVolume();
-        } catch(Exception e) {
-
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
@@ -48,6 +58,7 @@ public class Sound {
         clip.start();
     }
 
+    @SuppressWarnings("static-access")
     public void loop() {
         clip.loop(clip.LOOP_CONTINUOUSLY);
     }
@@ -56,8 +67,11 @@ public class Sound {
         clip.stop();
     }
 
+    /**
+     * Adjust the playback volume based on the current volumeScale.
+     */
     public void checkVolume() {
-        switch(volumeScale) {
+        switch (volumeScale) {
             case 0:
                 volume = -80f;
                 break;
@@ -75,6 +89,8 @@ public class Sound {
                 break;
             case 5:
                 volume = 6f;
+                break;
+            default:
                 break;
         }
         fc.setValue(volume);

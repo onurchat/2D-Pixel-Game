@@ -1,15 +1,22 @@
 package object;
 
-import java.awt.Color;
-
 import entity.Projectile;
+import java.awt.Color;
 import main.GamePanel;
 
-public class OBJ_Spirit extends Projectile{
+/**
+ * Represents a spirit object in the game.
+ */
+public class ObjSpirit extends Projectile {
 
     GamePanel gp;
 
-    public OBJ_Spirit(GamePanel gp) {
+    /**
+     * Constructs a new Spirit object.
+     * 
+     * @param gp the Gamepanel instance currently active
+     */
+    public ObjSpirit(GamePanel gp) {
         super(gp);
         this.gp = gp;
         name = "Spirit";
@@ -22,6 +29,9 @@ public class OBJ_Spirit extends Projectile{
         getImage();
     }
 
+    /**
+     * Loads and sets up images for spirit projectile.
+     */
     public void getImage() {
         up1 = setup("/res/projectile/spirit1", gp.tileSize, gp.tileSize);
         up2 = setup("/res/projectile/spirit2", gp.tileSize, gp.tileSize);
@@ -33,21 +43,33 @@ public class OBJ_Spirit extends Projectile{
         right2 = setup("/res/projectile/spirit2", gp.tileSize, gp.tileSize);
     }
 
+    /**
+     * Gets the color of particles.
+     */
     public Color getParticleColor() {
         Color color = new Color(0, 50, 255);
         return color;
     }
 
+    /**
+     * Gets the size of the particles.
+     */
     public int getParticleSize() {
         int size = 8;
         return size;
     }
 
+    /**
+     * Gets the speed of the particles.
+     */
     public int getParticleSpeed() {
         int speed = 1;
         return speed;
     }
 
+    /**
+     * Gets the lifespan of the particles.
+     */
     public int getParticleMaxLife() {
         int maxLife = 20;
         return maxLife;

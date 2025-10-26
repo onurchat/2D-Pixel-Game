@@ -2,6 +2,9 @@ package main;
 
 import java.awt.Rectangle;
 
+/**
+ * Handles ingame events.
+ */
 public class EventHandler {
     GamePanel gp;
     Rectangle eventRect;
@@ -11,6 +14,10 @@ public class EventHandler {
     int healCounter = 0;
     int healTriggerCounter = 0;
 
+    /**
+     * Construts an event handler for managing events.
+     * @param gp the gamepanel instance that manages the game
+     */
     public EventHandler(GamePanel gp) {
         this.gp = gp;
         eventRect = new Rectangle();
@@ -22,6 +29,9 @@ public class EventHandler {
         eventRectDefaultY = eventRect.y;
     }
 
+    /**
+     * Checks and processes all ingame events.
+     */
     public void checkEvent() {
         //COUNTERS
         if (dPitCounter <= 120) {
@@ -66,6 +76,14 @@ public class EventHandler {
         }
     }
 
+    /**
+     * Checks whether the player is currently collidign with a given event.
+     * 
+     * @param eventCol the column value of the event tile
+     * @param eventRow the row value of the event tile
+     * @param reqDirection the required player direction to triger an event
+     * @return true if the player intersects the specified event tile
+     */
     public boolean hit(int eventCol, int eventRow, String reqDirection) {
         boolean hit = false;
         //getting players current solid area positions
@@ -90,6 +108,12 @@ public class EventHandler {
 
         return hit;
     }
+
+    /**
+     * Trigers pit damage.
+     * 
+     * @param gameState the current game state
+     */
     public void damagePit(int gameState) {
         gp.gameState = gameState;
         //gp.ui.currentDialogue = "You fell into a pit!";
@@ -97,6 +121,12 @@ public class EventHandler {
         gp.player.life--;
         gp.playSoundEffect(4);
     }
+
+    /**
+     * Restores the players health when they interact with a healing cauldron.
+     * 
+     * @param gameState the current gamestate
+     */
     public void healing(int gameState) {
         gp.gameState = gameState;
         // gp.ui.currentDialogue = "You healed";

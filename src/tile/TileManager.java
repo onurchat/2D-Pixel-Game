@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
-
 import main.GamePanel;
 import main.UtilityTool;
 
@@ -17,11 +15,11 @@ public class TileManager {
 
     GamePanel gp;
     public Tile[] tile;
-    public int mapTileNumber[][];
+    public int[][] mapTileNumber;
     ArrayList<String> fileNames = new ArrayList<>();
     ArrayList<String> collisionStatus = new ArrayList<>();
 
-    //DEBUG
+    // DEBUG
     public boolean drawPath = false;
 
     public TileManager(GamePanel gp) {
@@ -53,7 +51,7 @@ public class TileManager {
 
         try {
             String line2 = br.readLine();
-            String maxTile[] = line2.split(" ");
+            String[] maxTile = line2.split(" ");
 
             gp.maxWorldCol = maxTile.length;
             gp.maxWorldRow = maxTile.length;
@@ -92,7 +90,8 @@ public class TileManager {
 
         try {
             tile[index] = new Tile();
-            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/" + imageName));
+            tile[index].image = ImageIO.read(getClass()
+                .getResourceAsStream("/res/tiles/" + imageName));
             tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
             tile[index].collision = collision;
 
@@ -112,7 +111,7 @@ public class TileManager {
             while (column < gp.maxWorldCol && row < gp.maxWorldRow) {
                 String line = br.readLine();
                 while (column < gp.maxWorldCol) {
-                    String numbers[] = line.split(" ");
+                    String[] numbers = line.split(" ");
                     int num = Integer.parseInt(numbers[column]);
                     mapTileNumber[column][row] = num;
                     column++;
@@ -125,7 +124,7 @@ public class TileManager {
             br.close();
 
         } catch (Exception e) {
-
+            System.out.println(e);
         }
     }
 

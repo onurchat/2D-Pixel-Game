@@ -1,22 +1,23 @@
 package main;
+
 import java.awt.Cursor;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
-
 import javax.swing.JFrame;
-
-import object.OBJ_Cursor;
-
+import object.ObjCursor;
 
 
+/**
+ * The {@code Main} class serves as the entry point for the game.
+ * 
+ */
 public class Main {
     public static JFrame window;
     public static boolean gameFocused = true;
-    public static OBJ_Cursor cursor;
+    public static ObjCursor cursor;
 
     public static void main(String[] args) {
         window = new JFrame();
@@ -30,14 +31,14 @@ public class Main {
 
         //CUSTOM CURSOR
         Toolkit toolkit = Toolkit.getDefaultToolkit();
-        cursor = new OBJ_Cursor(gamePanel);
+        cursor = new ObjCursor(gamePanel);
         BufferedImage cursorImage = cursor.image;
         UtilityTool uTool = new UtilityTool();
         uTool.scaleImage(cursorImage, 32, 32);
         Point hotspot = new Point(0, 0);
         Cursor customCursor = toolkit.createCustomCursor(cursorImage, hotspot, "Custom cursor");
         gamePanel.setCursor(customCursor);
-        cursor = new OBJ_Cursor(gamePanel);
+        cursor = new ObjCursor(gamePanel);
 
         
         window.addWindowFocusListener(new WindowFocusListener() {

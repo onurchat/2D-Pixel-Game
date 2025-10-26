@@ -1,22 +1,18 @@
 package entity;
 
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.plaf.basic.BasicTabbedPaneUI.MouseHandler;
-
 import main.GamePanel;
 import main.KeyHandler;
-import main.UtilityTool;
-import object.OBJ_Spirit;
+import object.ObjSpirit;
 
-public class Player extends Entity{
+/**
+ * The class represent the main controllable character in the game.
+ */
+public class Player extends Entity {
 
     KeyHandler keyH;
 
@@ -30,7 +26,13 @@ public class Player extends Entity{
     int projectileTimer = 40;
     int regenTimer = 0;
 
-    public Player (GamePanel gp, KeyHandler keyH) {
+    /**
+     * Construct a new Player instance.
+     * 
+     * @param gp the gamepanel managing the game enviorement.
+     * @param keyH the KeyHandler providing input state
+     */
+    public Player(GamePanel gp, KeyHandler keyH) {
 
         super(gp); //calling the constructor of superclass
 
@@ -56,7 +58,10 @@ public class Player extends Entity{
         getPlayerAttackImage();
     }
 
-    public void setDefaultValues () {
+    /**
+     * Set players default values.
+     */
+    public void setDefaultValues() {
         invincible = false;
         worldX = gp.tileSize * 45; 
         worldY = gp.tileSize * 45; 
@@ -67,9 +72,12 @@ public class Player extends Entity{
         maxLife = 6;
         life = maxLife;
 
-        projectile = new OBJ_Spirit(gp);
+        projectile = new ObjSpirit(gp);
     }
 
+    /**
+     * Loads and assigns movement sprite images for all directions.
+     */
     public void getPlayerImage() {
 
         up1 = setup("/res/player/up1", gp.tileSize, gp.tileSize);
@@ -82,6 +90,9 @@ public class Player extends Entity{
         right2 = setup("/res/player/right2", gp.tileSize, gp.tileSize);
     }
 
+    /**
+     * Loads and assigns attack sprite images for all directions.
+     */
     public void getPlayerAttackImage() {
 
         attackUp1 = setup("/res/player/attackup1", gp.tileSize, gp.tileSize * 2);
@@ -94,7 +105,10 @@ public class Player extends Entity{
         attackRight2 = setup("/res/player/attackright2", gp.tileSize * 2, gp.tileSize);
     }
 
-    public void update () {
+    /**
+     * Updates the players values.
+     */
+    public void update() {
         if (gp.keyH.ePressed) {
             isPlayerAttacking = true;
             if (soundEffectTimer >= 30) {
@@ -196,6 +210,8 @@ public class Player extends Entity{
                         worldX -= 3;
                         worldY += 3;
                         break;
+                    default:
+                        break;
                 }
             }
 
@@ -222,7 +238,8 @@ public class Player extends Entity{
 
         if (projectileTimer >= 40) {
             if (gp.mouseH.mousePressed) {
-                projectile.setPlayerProjectile(worldX, worldY, gp.mouseH.mouseX, gp.mouseH.mouseY, true, this);
+                projectile.setPlayerProjectile(worldX, worldY, 
+                    gp.mouseH.mouseX, gp.mouseH.mouseY, true, this);
 
                 gp.projectileList.add(projectile);
                 gp.playSoundEffect(6);
@@ -236,7 +253,10 @@ public class Player extends Entity{
             gp.playSoundEffect(7);
         }
     }
-
+    
+    /**
+     * Executes the players attack.
+     */
     public void attacking() {
         spriteCounter++;
 
@@ -253,7 +273,7 @@ public class Player extends Entity{
             int solidAreaHeight = solidArea.height;
 
             //adjust player's world x, y for attack area
-            switch(direction) {
+            switch (direction) {
                 case "up": 
                     worldY -= attackArea.height;
                     break;
@@ -278,6 +298,8 @@ public class Player extends Entity{
                 case "downleft":
                     worldY += attackArea.height;
                     break;
+                default:
+                    break;
             }
 
             //attack area becomes solid area
@@ -300,11 +322,16 @@ public class Player extends Entity{
         }
     }
 
+    /**
+     * Handles player interactions with objects.
+     * 
+     * @param i the index of the object
+     */
     public void pickUpObject(int i) {
         if (i != 999) {
             String objName = gp.obj[i].name;
 
-            switch(objName) {
+            switch (objName) {
                 case "Key":
                     gp.playSoundEffect(1);
                     hasKey++;
@@ -327,17 +354,28 @@ public class Player extends Entity{
                     gp.obj[i] = null;
                     gp.ui.showMessage("You gained a heart!");
                     break;
+                default:
+                    break;
             }
         }
     }
 
+    /**
+     * Initiates dialogue with an NPC.
+     * 
+     * @param i the index of the NPC entity
+     */
     public void interactNPC(int i) {
-        if (i != 999) { 
+        if (i != 999) {
             gp.gameState = gp.dialougeState;
             gp.npc.get(i).speak();
-       }
+        }
     }
 
+    /**
+     * Applies damage to the player when contacting a monster.
+     * @param i the index of the monster entity
+     */
     public void contactMonster(int i) {
         if (i != 999 && !invincible && !gp.monster.get(i).dying && gp.monster.get(i).alive) {
             gp.playSoundEffect(4);
@@ -346,6 +384,12 @@ public class Player extends Entity{
         }
     }
 
+    /**
+     * Deals damage to a monster.
+     * 
+     * @param i the index of the monster
+     * @param damage the amount of damage dealt
+     */
     public void damageMonster(int i, int damage) {
         if (i != 999) {
             if (!gp.monster.get(i).invincible) {
@@ -361,13 +405,16 @@ public class Player extends Entity{
         }
     }
 
-    public void draw (Graphics2D g2) {
+    /**
+     * Draws the player and attack animation on the screen.
+     */
+    public void draw(Graphics2D g2) {
 
         BufferedImage image = null;
         int tempScreenX = screenX;
         int tempScreenY = screenY;
 
-        switch(direction) {
+        switch (direction) {
             case "up":
                 if (!isPlayerAttacking) {
                     if (spriteNumber == 1) {
@@ -515,6 +562,8 @@ public class Player extends Entity{
                         image = attackDown2;
                     }
                 }
+                break;
+            default:
                 break;
 
         }

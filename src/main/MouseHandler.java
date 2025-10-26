@@ -1,12 +1,13 @@
 package main;
 
-import java.awt.event.KeyAdapter;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JPanel;
-
-public class MouseHandler extends MouseAdapter{
+/**
+ * The class manages mouse input for the game.
+ */
+public class MouseHandler extends MouseAdapter {
 
     GamePanel gp;
 
@@ -15,7 +16,11 @@ public class MouseHandler extends MouseAdapter{
     public boolean mousePressed = false;
     double scaleX;
     double scaleY;
-
+    
+    /**
+     *  Constructs a new MouseHandler linked to the game panel.
+     * @param gp the active GamePanel instance
+     */
     public MouseHandler(GamePanel gp) {
         this.gp = gp;
         scaleX = (double) gp.screenWidth / gp.screenWidth2;

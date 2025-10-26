@@ -1,13 +1,8 @@
 package main;
 
-import javax.swing.JPanel;
-
 import ai.PathFinder;
 import entity.Entity;
 import entity.Player;
-import object.SuperObject;
-import tile.TileManager;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -16,8 +11,14 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Random;
+import javax.swing.JPanel;
+import object.SuperObject;
+import tile.TileManager;
 
+
+/**
+ * The class manages rendering,game state updates and acts as a primary game loop.
+ */
 public class GamePanel extends JPanel implements Runnable {
     // SCREEN SETTINGS
     final int originalTileSize = 16; // 16x16 tile
@@ -59,7 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
-    public SuperObject obj[] = new SuperObject[10];
+    public SuperObject[] obj = new SuperObject[10];
     // public Entity npc[] = new Entity[10];
     // public Entity monster[] = new Entity[50];
     public ArrayList<Entity> projectileList = new ArrayList<>();
@@ -76,6 +77,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int optionsState = 4;
     public final int gameOverState = 5;
 
+    /**
+     * Construct a gamepanel object.
+     */
     public GamePanel() {
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -86,6 +90,9 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
     }
 
+    /**
+     * Sets up and initializes game systems.
+     */
     public void setupGame() {
         setFullScreen();
         aSetter.setObject();
@@ -97,6 +104,9 @@ public class GamePanel extends JPanel implements Runnable {
         g2 = (Graphics2D) tempScreen.getGraphics();
     }
 
+    /**
+     * Resets the game.
+     */
     public void restart() {
         player.setDefaultValues();
         aSetter.setObject();
@@ -111,6 +121,9 @@ public class GamePanel extends JPanel implements Runnable {
         monsterMultiplyer = 1;
     }
 
+    /**
+     * Enable full screen display.
+     */
     public void setFullScreen() {
         // GET LOCAL SCREEN DEVICE
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -122,6 +135,9 @@ public class GamePanel extends JPanel implements Runnable {
         screenHeight2 = Main.window.getHeight();
     }
 
+    /**
+     * Starts the game thread.
+     */
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
@@ -135,7 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
         double lastTime = System.nanoTime();
         double currentTime;
         long timer = 0;
-        int drawCount = 0;
+        
 
         while (gameThread != null) {
 
@@ -153,11 +169,11 @@ public class GamePanel extends JPanel implements Runnable {
                 drawToTempScreen(); // draw everything to the buffered image
                 drawToScreen(); // draw the buffered image to screen
                 delta--;
-                drawCount++;
+               
             }
 
             if (timer >= 1000000000) {
-                drawCount = 0;
+               
                 timer = 0;
             }
 
@@ -165,6 +181,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
+    /**
+     * Updates the logic for all game entities.
+     */
     public void update() {
 
         if (gameState == playState) {
@@ -219,10 +238,13 @@ public class GamePanel extends JPanel implements Runnable {
 
         }
         if (gameState == pauseState) {
-
+            System.out.println("paused");
         }
     }
 
+    /**
+     * Draws all game components to the temporary off screen buffer.
+     */
     public void drawToTempScreen() {
         // DEBUG
         long drawStart = 0;
@@ -288,84 +310,20 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Draws the off screen buffer image to the screen.
+     */
     public void drawToScreen() {
         Graphics g = getGraphics();
         g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null);
         g.dispose();
     }
 
-    // CAN BE DELETED
-    public void paintComponent(Graphics g) { // g represents the canvas
-
-        super.paintComponent(g); // calls the paintComponent of superclass
-
-        Graphics2D g2 = (Graphics2D) g; // casting g to g2 (Graphics is superclass, Graphics2D is subclass)
-
-        // DEBUG
-        long drawStart = 0;
-        if (keyH.checkDrawTime) {
-            drawStart = System.nanoTime();
-        }
-
-        // TITLE SCREEN
-        if (gameState == titleState) {
-            ui.draw(g2);
-        } else {
-            tileManager.draw(g2); // ORDER MATTERS!! tiles in background, player front!
-
-            // DRAW OBJECTS
-            for (int i = 0; i < obj.length; i++) {
-                if (obj[i] != null) {
-                    obj[i].draw(g2, this);
-                }
-            }
-
-            // DRAW NPC
-            for (int i = 0; i < npc.size(); i++) {
-                if (npc.get(i) != null) {
-                    npc.get(i).draw(g2);
-                }
-            }
-
-            // DRAW MONSTERS
-            for (int i = 0; i < monster.size(); i++) {
-                if (monster.get(i) != null) {
-                    monster.get(i).draw(g2);
-                }
-            }
-
-            // DRAW PROJECTILES
-            for (int i = 0; i < projectileList.size(); i++) {
-                if (projectileList.get(i) != null) {
-                    projectileList.get(i).draw(g2);
-                }
-            }
-
-            player.draw(g2); // drawing player
-
-            //DRAW PARTICLES
-            for (int i = 0; i < particleList.size(); i++) {
-                if (particleList.get(i) != null) {
-                    particleList.get(i).draw(g2);
-                }
-            }
-
-            ui.draw(g2); // UI ON TOP
-        }
-
-        // DEBUG
-        if (keyH.checkDrawTime) {
-            long drawEnd = System.nanoTime();
-            long passed = drawEnd - drawStart;
-            g2.setColor(Color.white);
-            g2.drawString("Draw Time: " + passed, 10, 400);
-            g2.drawString("FPS: " + fps, 10, 450);
-            g2.drawString("Sprite Number: " + this.player.spriteCounter, 10, 500);
-        }
-
-        g2.dispose();
-    }
-
+    /**
+     * Plays a background music.
+     * 
+     * @param i index of the audio file to play
+     */
     public void playMusic(int i) {
         music.setFile(i); 
         music.play();
@@ -376,6 +334,11 @@ public class GamePanel extends JPanel implements Runnable {
         music.stop();
     }
 
+    /**
+     * Plays a single sound effect.
+     * 
+     * @param i index of the sound effect
+     */
     public void playSoundEffect(int i) {
         soundEffect.setFile(i);
         soundEffect.play();

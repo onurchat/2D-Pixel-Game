@@ -2,7 +2,10 @@ package entity;
 
 import main.GamePanel;
 
-public class Projectile extends Entity{
+/**
+ * Represents a projectile entity that can be fired by both the player and monsters.
+ */
+public class Projectile extends Entity {
 
     Entity user;
     public int destWorldX;
@@ -16,7 +19,18 @@ public class Projectile extends Entity{
         super(gp);
     }
 
-    public void setPlayerProjectile(int worldX, int worldY, int destScreenX, int destScreenY, boolean alive, Entity user) {
+    /**
+     * Initializes the projectile when fired by the player.
+     * 
+     * @param worldX The x coordinate of the projectiles spawn position
+     * @param worldY The y coordinate of the projectiles spawn position
+     * @param destScreenX The x cordinate of the destinaton
+     * @param destScreenY The y cordinate of the destinaton
+     * @param alive wheather the projectile is active upon creation
+     * @param user the entity that created the projectile
+     */
+    public void setPlayerProjectile(int worldX,
+        int worldY, int destScreenX, int destScreenY, boolean alive, Entity user) {
 
         this.worldX = worldX;
         this.worldY = worldY;
@@ -39,7 +53,17 @@ public class Projectile extends Entity{
         vY = dy * speed;
     }
 
-    public void setMonsterProjectile(int worldX, int worldY, String direction, boolean alive, Entity user) {
+    /**
+     * Initilaze a projectile fired by a monster
+     * 
+     *@param worldX The x coordinate of the projectiles spawn position
+     * @param worldY The y coordinate of the projectiles spawn position
+     * @param direction the direction of the projectile
+     * @param alive wheather the projectile is active upon creation
+     * @param user the entity that created the projectile
+     */
+    public void setMonsterProjectile(int worldX, int worldY,
+        String direction, boolean alive, Entity user) {
         this.worldX = worldX;
         this.worldY = worldY;
         this.direction = direction;
@@ -48,6 +72,10 @@ public class Projectile extends Entity{
         this.life = maxLife;
     }
 
+
+    /**
+     * Updates the state of the projectile each frame.
+     */
     public void update() {
 
         if (user == gp.player) {
@@ -89,6 +117,8 @@ public class Projectile extends Entity{
                     break;
                 case "left":
                     worldX -= speed;
+                    break;
+                default:
                     break;
             }
             life--;

@@ -1,12 +1,18 @@
 package entity;
 
 import java.util.Random;
-
 import main.GamePanel;
 
-public class NPC_Reaper extends Entity{
+/**
+ * The class represents a NPC that roams around randomly.
+ */
+public class NPCReaper extends Entity {
 
-    public NPC_Reaper(GamePanel gp) {
+    /**
+     * Construct a new npc instance.
+     * @param gp the gamepanel instance that manages the game enviorement
+     */
+    public NPCReaper(GamePanel gp) {
         super(gp);
 
         direction = "down";
@@ -16,6 +22,9 @@ public class NPC_Reaper extends Entity{
         setDialogue();
     }
 
+    /**
+     * Loads and assigns the sprite images used for the Reaper.
+     */
     public void getImage() {
 
         up1 = setup("/res/npc/reaper_up1", gp.tileSize, gp.tileSize);
@@ -28,13 +37,20 @@ public class NPC_Reaper extends Entity{
         right2 = setup("/res/npc/reaper_right2", gp.tileSize, gp.tileSize);
     }
 
+    /**
+     * Defines the dialogue lines spoken by the NPC.
+     */
     public void setDialogue() {
         dialogues[0] = "It's always hot down \nhere you know...";
         dialogues[1] = "You think you can \nsurvive with \nthese temperatures??";
-        dialogues[2] = "Just like you, I \nwanted to survive \nas long as possible here \nback then...";
+        dialogues[2] = 
+            "Just like you, I \nwanted to survive \nas long as possible here \nback then...";
         dialogues[3] = "But then I learned, \ndeath is inevitable...";
     }
 
+    /**
+     * Defines the NPC's random movement behaviour.
+     */
     public void setAction() {
 
         actionCounter++;

@@ -1,16 +1,22 @@
 package object;
 
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
 import main.GamePanel;
 
-public class OBJ_Door extends SuperObject{
+/**
+ * Represents a door object in the game.
+ */
+public class ObjDoor extends SuperObject {
 
     GamePanel gp;
-
-    public OBJ_Door(GamePanel gp) {
+    
+    /**
+     * Constructs a new door object.
+     * 
+     * @param gp the Gamepanel instance currently active
+     */
+    public ObjDoor(GamePanel gp) {
         this.gp = gp;
         name = "Door";
         try {

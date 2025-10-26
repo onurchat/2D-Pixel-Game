@@ -1,15 +1,21 @@
 package object;
 
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
 import main.GamePanel;
 
-public class OBJ_Cursor extends SuperObject{
+/**
+ * Represents a cursor object in the game.
+ */
+public class ObjCursor extends SuperObject {
     GamePanel gp;
 
-    public OBJ_Cursor(GamePanel gp) {
+    /**
+     * Constructs a new Cursor object.
+     * 
+     * @param gp the Gamepanel instance currently active
+     */
+    public ObjCursor(GamePanel gp) {
         this.gp = gp;
         name = "Cursor";
         try {

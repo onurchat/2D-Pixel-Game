@@ -1,9 +1,11 @@
 package main;
 
+import entity.Entity;
 import java.util.ArrayList;
 
-import entity.Entity;
-
+/**
+ * The class handles collision detection for all game entities.
+ */
 public class CollisionChecker {
 
     GamePanel gp;
@@ -12,6 +14,11 @@ public class CollisionChecker {
         this.gp = gp;
     }
 
+    /**
+     * Checks collision between entity and tile.
+     * 
+     * @param entity the entity to check for tile collisions.
+     */
     public void checkTile(Entity entity) { 
 
 
@@ -28,9 +35,10 @@ public class CollisionChecker {
         int entityTopRow = entityTopWorldY / gp.tileSize;
         int entityBottomRow = entityBottomWorldY / gp.tileSize;
 
-        int tileNum1, tileNum2, tileNum3;
+        int tileNum1;
+        int tileNum2;
 
-        switch(entity.direction) {
+        switch (entity.direction) {
 
             case "up":
                 //what 2 tiles player is trying to step in
@@ -109,10 +117,18 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
                 break;
+            default:
+                break;
         }
 
     }
 
+    /**
+     * Checks for collisions between an entity and game object.
+     * @param entity the entity perfoming the collision check
+     * @param player true if the entity is the player
+     * @return the index of the collided object
+     */
     public int checkObject(Entity entity, boolean player) {
         int index = 999;
 
@@ -126,7 +142,7 @@ public class CollisionChecker {
                 gp.obj[i].solidArea.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
                 gp.obj[i].solidArea.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
 
-                switch(entity.direction) {
+                switch (entity.direction) {
                     case "up":
                         entity.solidArea.y -= entity.speed;
                         if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
@@ -219,6 +235,8 @@ public class CollisionChecker {
                             }
                         }
                         break;
+                    default:
+                        break;
                 }
 
                 //resetting values
@@ -232,7 +250,14 @@ public class CollisionChecker {
 
         return index;
     }
-    //NPC or MONSTER COLLISION
+    
+    /**
+     * Checks for collision between an entity and a list of other entities.
+     * 
+     * @param entity the entity performing the collision check
+     * @param target the list of entities to check for collision
+     * @return the index of the collided entity
+     */
     public int checkEntity(Entity entity, ArrayList<Entity> target) {
         int index = 999;
 
@@ -275,6 +300,8 @@ public class CollisionChecker {
                         entity.solidArea.y += entity.speed;
                         entity.solidArea.x -= entity.speed;
                         break;
+                    default:
+                        break;
                 }
                 if (entity.solidArea.intersects(target.get(i).solidArea)) {
                     if (target.get(i) != entity) {
@@ -287,12 +314,17 @@ public class CollisionChecker {
                 entity.solidArea.y = entity.solidaAreaDefaultY; 
                 target.get(i).solidArea.x = target.get(i).solidAreaDefaultX;
                 target.get(i).solidArea.y = target.get(i).solidaAreaDefaultY;
-                }
             }
+        }
         return index;
     }
 
-    //CHECKING IF NPC's or MONSTERS ARE TRYING TO HIT PLAYER
+    /**
+     * Checks whether a NPC is colliding with the player.
+     * 
+     * @param entity THe entity being checked against the player
+     * @return true if the entity collides with player.
+     */
     public boolean checkPlayer(Entity entity) {
 
         boolean contactPlayer = false;
@@ -317,7 +349,9 @@ public class CollisionChecker {
                 break;
             case "right":
                 entity.solidArea.x += entity.speed;
-                break;    
+                break;
+            default:
+                break;
         }
         if (entity.solidArea.intersects(gp.player.solidArea)) {
             entity.collisionOn = true;

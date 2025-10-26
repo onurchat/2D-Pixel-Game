@@ -1,16 +1,22 @@
 package object;
 
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
 import main.GamePanel;
 
-public class OBJ_Key extends SuperObject{
+/**
+ * Represents a key object in the game.
+ */
+public class ObjKey extends SuperObject {
 
     GamePanel gp;
 
-    public OBJ_Key(GamePanel gp) {
+    /**
+     * Constructs a new key object.
+     * 
+     * @param gp the Gamepanel instance currently active
+     */
+    public ObjKey(GamePanel gp) {
         this.gp = gp;
         name = "Key";
         try {

@@ -3,22 +3,32 @@ package object;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import main.GamePanel;
 import main.UtilityTool;
 
-//Parent Class of ALL Object Classes
+/**
+ * Parent Class of ALL Object Classes.
+ */
 public class SuperObject {
 
-    public BufferedImage image, image2, image3;
+    public BufferedImage image;
+    public BufferedImage image2;
+    public BufferedImage image3;
     public String name;
     public boolean collision = false;
-    public int worldX, worldY;
-    public Rectangle solidArea = new Rectangle(0,0, 48,48);
+    public int worldX;
+    public int worldY;
+    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
     public UtilityTool uTool = new UtilityTool();
-
+    
+    /**
+     * draws every object on the screen.
+     * 
+     * @param g2 the Graphics2D instance
+     * @param gp the Gamepanel instance
+     */
     public void draw(Graphics2D g2, GamePanel gp) {
 
         //position of tile ON SCREEN

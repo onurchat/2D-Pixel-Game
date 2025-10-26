@@ -6,23 +6,56 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Random;
-
 import javax.imageio.ImageIO;
-
 import main.GamePanel;
 import main.UtilityTool;
 
+/**
+ * The class serves as a base class for all Entities in the game. 
+ * It defines position movement hitboxes and more.
+ */
 public class Entity {
 
     GamePanel gp;
 
     public String name;
-    public int worldX, worldY;
+    public int worldX;
+
+    public int worldY;
+
     public int speed;
-    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, 
-        attackLeft1, attackLeft2, attackRight1, attackRight2;
+    public BufferedImage up1;
+
+    public BufferedImage up2;
+
+    public BufferedImage down1;
+
+    public BufferedImage down2;
+
+    public BufferedImage left1;
+
+    public BufferedImage left2;
+
+    public BufferedImage right1;
+
+    public BufferedImage right2;
+
+    public BufferedImage attackUp1;
+
+    public BufferedImage attackUp2;
+
+    public BufferedImage attackDown1;
+
+    public BufferedImage attackDown2;
+
+    public BufferedImage attackLeft1;
+
+    public BufferedImage attackLeft2;
+
+    public BufferedImage attackRight1;
+
+    public BufferedImage attackRight2;
+
     public String direction;
     public int spriteCounter = 0;
     public int spriteNumber = 1;
@@ -34,7 +67,7 @@ public class Entity {
     public int actionCounter = 0;
     public boolean invincible = false;
     public int invincibleCounter = 0;
-    String dialogues[] = new String[20];
+    String[] dialogues = new String[20];
     int dialogueIndex = 0;
     public int type; //0 = player, 1= NPC, 2= monster
     public boolean isPlayerAttacking = false;
@@ -63,6 +96,9 @@ public class Entity {
         //empty BUT subclass has same method and takes priority
     }
 
+    /**
+     * Handles entity dialogue.
+     */
     public void speak() {
         if (dialogues[dialogueIndex] == null) {
             dialogueIndex = 0;
@@ -108,9 +144,15 @@ public class Entity {
             case "downleft": 
                 direction = "up";
                 break;
+            default:
+                break;
         }
     }
 
+    /**
+     * Checks for collisions between this entity and other collisions. If the
+     * collisions comes from an enemy player takes damage.
+     */
     public void checkCollision() {
         collisionOn = false;
         gp.cChecker.checkTile(this);
@@ -125,7 +167,10 @@ public class Entity {
             gp.player.invincible = true;
         }
     }
-
+    
+    /**
+     * Updates the entity's position, animation and state.
+     */
     public void update() { //identical for all entities
 
         if (type == 2 && shotAvailableCounter < 30) {
@@ -150,6 +195,8 @@ public class Entity {
                 case "right":
                     worldX += speed;
                     break;
+                default:
+                    break;
             }
         }
 
@@ -162,6 +209,11 @@ public class Entity {
         }
     }
 
+    /**
+     * Renders the entity on the game screen.
+     * 
+     * @param g2 the {@code Graphics2D} contex used for rendering
+     */
     public void draw(Graphics2D g2) {
 
         BufferedImage image = null;
@@ -209,6 +261,9 @@ public class Entity {
                     if (spriteNumber == 2) {
                         image = left2;
                     }
+                    break;
+                default:
+                    break;
             }
 
             //Monster HP BAR
@@ -257,6 +312,11 @@ public class Entity {
         this.mIndex = i;
     }
 
+    /**
+     * Plays the entity's dying animation and removes it from the game.
+     * 
+     * @param g2 the {@code Graphics2D} contex used for fading animation.
+     */
     public void dyingAnimation(Graphics2D g2) {
         dyingCounter++;
         int animationInterval = 5;
@@ -302,20 +362,34 @@ public class Entity {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
     }
 
+    /**
+     * Loads and scales image from the given path.
+     * 
+     * @param imagePath the path to the image file
+     * @param width the image width
+     * @param height the image height
+     * @return the loaded and scaled image
+     */
     public BufferedImage setup(String imagePath, int width, int height) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
 
-        try{
+        try {
             image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
             image = uTool.scaleImage(image, width, height);
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         return image;
     }
 
+    /**
+     * Directs the entity to move toward a target position.
+     * 
+     * @param goalCol the goal tile column value
+     * @param goalRow the goal tile row value
+     */
     public void searchPath(int goalCol, int goalRow) {
 
         int startCol = (worldX + solidArea.x) / gp.tileSize;
@@ -387,26 +461,53 @@ public class Entity {
     }
 
     //PARTICLES BLUEPRINT METHODS
+
+    /**
+     * Returns the color of particles generated by this entity.
+     * 
+     * @return the color of particle
+     */
     public Color getParticleColor() {
         Color color = null;
         return color;
     }
-    
+
+    /**
+     * Returns the size of particles generated by this entity.
+     * 
+     * @return the size of particle
+     */
     public int getParticleSize() {
         int size = 0;
         return size;
     }
     
+    /**
+     * Returns the speed of particles generated by this entity.
+     * 
+     * @return the speed of particle
+     */
     public int getParticleSpeed() {
         int speed = 0;
         return speed;
     }
     
+    /**
+     * Returns the maximum lifespan of particles.
+     * 
+     * @return the particle lifespan
+     */
     public int getParticleMaxLife() {
         int maxLife = 20;
         return maxLife;
     }
 
+    /**
+     * Generates and spawns four particles around target entity.
+     * 
+     * @param generator the entity that creates the particles
+     * @param target the target entity around which particles appear
+     */
     public void generateParticle(Entity generator, Entity target) {
 
         Color color = generator.getParticleColor();
