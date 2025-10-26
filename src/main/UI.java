@@ -98,9 +98,9 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20F));
         g2.setColor(Color.white);
         if (gp.player.hasKey > 0) {
-            g2.drawImage(keyImage, gp.tileSize / 2,
-                gp.tileSize * 2, gp.tileSize, gp.tileSize, null);
-            g2.drawString(" " + gp.player.hasKey, 74, 137);
+            g2.drawImage(keyImage, gp.tileSize,
+                gp.tileSize * 2 + 10, gp.tileSize, gp.tileSize, null);
+            g2.drawString(" " + gp.player.hasKey, 84, 137);
         }
 
         // TIME

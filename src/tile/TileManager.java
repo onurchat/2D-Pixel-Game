@@ -11,6 +11,9 @@ import javax.imageio.ImageIO;
 import main.GamePanel;
 import main.UtilityTool;
 
+/**
+ * Manages all the tiles on the map.
+ */
 public class TileManager {
 
     GamePanel gp;
@@ -22,6 +25,11 @@ public class TileManager {
     // DEBUG
     public boolean drawPath = false;
 
+    /**
+     * Constructs a new TileManager.
+     * 
+     * @param gp     the column value of the event tile
+     */
     public TileManager(GamePanel gp) {
         this.gp = gp;
 
@@ -65,6 +73,10 @@ public class TileManager {
         loadMap("/res/maps/hell03.txt");
     }
 
+    /**
+     * Gets the tile Image and Collision status.
+     * 
+     */
     public void getTileImage() {
 
         for (int i = 0; i < fileNames.size(); i++) {
@@ -85,6 +97,13 @@ public class TileManager {
         }
     }
 
+    /**
+     * Sets all the different tiles up.
+     * 
+     * @param index index of the tile to be setup
+     * @param imageName name of the file for tile's image
+     * @param collision the collision status of the tile
+     */
     public void setup(int index, String imageName, boolean collision) {
         UtilityTool uTool = new UtilityTool();
 
@@ -100,6 +119,11 @@ public class TileManager {
         }
     }
 
+    /**
+     * Reads and loads the data in the .txt map file.
+     * 
+     * @param mapFilePath file path of the .txt map file
+     */
     public void loadMap(String mapFilePath) {
         try {
             InputStream is = getClass().getResourceAsStream(mapFilePath);
@@ -128,6 +152,11 @@ public class TileManager {
         }
     }
 
+    /**
+     * Draws the loaded map.
+     * 
+     * @param g2  Graphics 2D
+     */
     public void draw(Graphics2D g2) {
 
         int worldCol = 0;

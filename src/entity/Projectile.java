@@ -54,7 +54,7 @@ public class Projectile extends Entity {
     }
 
     /**
-     * Initilaze a projectile fired by a monster
+     * Initilaze a projectile fired by a monster.
      * 
      *@param worldX The x coordinate of the projectiles spawn position
      * @param worldY The y coordinate of the projectiles spawn position
