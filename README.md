@@ -1,3 +1,10 @@
+## Screenshots
+![Combat](attackingmonsters.png)
+![Reaper NPC](NPCInteraction.png)
+![Collision with Objects](collisionwithwalls.png)
+![Monsters Multiplying](monstersMultiplying.png)
+![Path Finding](pathfinding.png)
+
 # How to run the game?
 
 1. Run Java (main)
