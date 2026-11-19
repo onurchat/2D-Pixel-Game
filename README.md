@@ -1,9 +1,15 @@
 ## Screenshots
-![Combat](attackingmonsters.png)
-![Reaper NPC](NPCInteraction.png)
-![Collision with Objects](collisionwithwalls.png)
-![Monsters Multiplying](monstersMultiplying.png)
-![Path Finding](pathfinding.png)
+![Combat](screenshots/attackingmonsters.png)
+![Reaper NPC](screenshots/NPCInteraction.png)
+![Collision with Objects](screenshots/collisionwithwalls.png)
+![Monsters Multiplying](screenshots/monstersMultiplying.png)
+![Path Finding](screenshots/pathfinding.png)
+
+## Technical highlights
+- **No game engine:** built from scratch in Java (rendering, input, audio, game state)
+- **A\* pathfinding:** monsters find a route to the player around obstacles
+- **Fixed-timestep game loop:** game logic runs at the same speed on every machine
+- **Tile-based maps:** levels are built from tile maps, with collision against solid tiles
 
 # How to run the game?
 
